@@ -87,8 +87,9 @@ namespace PrimerProyecto.Models
 			IList<Pago> res = new List<Pago>();
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"SELECT Id, NroPago, FechaPago, Importe, ContratoId" +
-					$" FROM Pago";
+				string sql = $"SELECT p.Id, NroPago, FechaPago, Importe, ContratoId," +
+					$" ca.Monto, ca.FechaInicio, ca.FechaFinalizacion" +
+					$" FROM Pago p INNER JOIN ContratoAlquiler ca ON p.ContratoId = ca.Id";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
 					command.CommandType = CommandType.Text;
@@ -101,8 +102,14 @@ namespace PrimerProyecto.Models
 							Id = reader.GetInt32(0),
 							NroPago = reader.GetInt32(1),
 							FechaPago = reader.GetDateTime(2),
-							Importe = Convert.ToDouble(reader.GetDecimal(3)),
+							Importe = reader.GetDecimal(3),
 							ContratoId = reader.GetInt32(4),
+							ContratoAlquiler = new ContratoAlquiler {
+								Id = reader.GetInt32(4),
+								Monto = reader.GetDecimal(5),
+								FechaInicio = reader.GetDateTime(6),
+								FechaFinalizacion = reader.GetDateTime(7),
+							}
 			
 						};
 						res.Add(p);
@@ -118,8 +125,9 @@ namespace PrimerProyecto.Models
 			Pago p = null;
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"SELECT Id, NroPago, FechaPago, Importe, ContratoId FROM Pago" +
-					$" WHERE Id=@id";
+				string sql = $"SELECT p.Id, NroPago, FechaPago, Importe, ContratoId, ca.Monto, ca.FechaInicio, ca.FechaFinalizacion " +
+					$"FROM Pago p INNER JOIN ContratoAlquiler ca ON p.ContratoId = ca.Id" +
+					$" WHERE p.Id=@id";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
 					command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -133,14 +141,61 @@ namespace PrimerProyecto.Models
 							Id = reader.GetInt32(0),
 							NroPago = reader.GetInt32(1),
 							FechaPago = reader.GetDateTime(2),
-							Importe = Convert.ToDouble(reader.GetDecimal(3)),
+							Importe = reader.GetDecimal(3),
 							ContratoId = reader.GetInt32(4),
+							ContratoAlquiler = new ContratoAlquiler
+							{
+								Id = reader.GetInt32(4),
+								Monto = reader.GetDecimal(5),
+								FechaInicio = reader.GetDateTime(6),
+								FechaFinalizacion = reader.GetDateTime(7),
+							}
 						};
 					}
 					connection.Close();
 				}
 			}
 			return p;
+		}
+		public IList<Pago> ObtenerTodosPorContratoId(int contratoId)
+		{
+			IList<Pago> res = new List<Pago>();
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				string sql = $"SELECT p.Id, NroPago, FechaPago, Importe, ContratoId," +
+					$" ca.Monto, ca.FechaInicio, ca.FechaFinalizacion" +
+					$" FROM Pago p INNER JOIN ContratoAlquiler ca ON p.ContratoId = ca.Id" +
+					$" WHERE p.ContratoId = @contratoId";
+				using (SqlCommand command = new SqlCommand(sql, connection))
+				{
+					command.Parameters.Add("@contratoId", SqlDbType.Int).Value = contratoId;
+					command.CommandType = CommandType.Text;
+					connection.Open();
+					var reader = command.ExecuteReader();
+					while (reader.Read())
+					{
+						Pago p = new Pago
+						{
+							Id = reader.GetInt32(0),
+							NroPago = reader.GetInt32(1),
+							FechaPago = reader.GetDateTime(2),
+							Importe = reader.GetDecimal(3),
+							ContratoId = reader.GetInt32(4),
+							ContratoAlquiler = new ContratoAlquiler
+							{
+								Id = reader.GetInt32(4),
+								Monto = reader.GetDecimal(5),
+								FechaInicio = reader.GetDateTime(6),
+								FechaFinalizacion = reader.GetDateTime(7),
+							}
+
+						};
+						res.Add(p);
+					}
+					connection.Close();
+				}
+			}
+			return res;
 		}
 	}
 }

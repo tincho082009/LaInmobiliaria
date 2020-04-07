@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,7 @@ using PrimerProyecto.Models;
 
 namespace PrimerProyecto.Controllers
 {
+    [Authorize]
     public class InquilinosController : Controller
     {
         private readonly IConfiguration configuration;
@@ -24,6 +26,10 @@ namespace PrimerProyecto.Controllers
         public ActionResult Index()
         {
             var lista = ri.ObtenerTodos();
+            if (TempData.ContainsKey("Id"))
+                ViewBag.Id = TempData["Id"];
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
             return View(lista);
         }
 
@@ -47,13 +53,21 @@ namespace PrimerProyecto.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                int res = ri.Alta(inquilino);
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+
+                    int res = ri.Alta(inquilino);
+                    TempData["Id"] = inquilino.Id;
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                    return View(inquilino);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View(inquilino);
             }
         }
 
@@ -61,6 +75,10 @@ namespace PrimerProyecto.Controllers
         public ActionResult Edit(int id)
         {
             var sujeto = ri.ObtenerPorId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
             return View(sujeto);
         }
 
@@ -73,11 +91,14 @@ namespace PrimerProyecto.Controllers
             {
                 // TODO: Add update logic here
                 ri.Modificacion(inquilino);
+                TempData["Mensaje"] = "Datos guardados correctamente";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View(inquilino);
             }
         }
 
@@ -85,23 +106,30 @@ namespace PrimerProyecto.Controllers
         public ActionResult Delete(int id)
         {
             var sujeto = ri.ObtenerPorId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
             return View(sujeto);
         }
 
         // POST: Inquilinos/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Inquilino i)
         {
             try
             {
                 // TODO: Add delete logic here
                 ri.Baja(id);
+                TempData["Mensaje"] = "Eliminación realizada correctamente";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View(i);
             }
         }
     }

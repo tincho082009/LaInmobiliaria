@@ -29,8 +29,13 @@
                 <span asp-validation-for="Importe" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ContratoId" class="control-label"></label>
-                <input asp-for="ContratoId" class="form-control" />
+                <label class="control-label">Contrato</label>
+                <select class="form-control" name="ContratoId">
+                    @foreach (var item in (IList<ContratoAlquiler>)ViewBag.ContratoAlquiler)
+                    {
+                        @:<option @(item.Id == Model.ContratoId ? "selected" : "") value="@item.Id">@(item.Id + " " + item.Monto)</option>
+                    }
+                </select>
                 <span asp-validation-for="ContratoId" class="text-danger"></span>
             </div>
             <div class="form-group">

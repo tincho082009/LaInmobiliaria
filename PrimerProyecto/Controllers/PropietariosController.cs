@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +10,8 @@ using PrimerProyecto.Models;
 
 namespace PrimerProyecto.Controllers
 {
-	public class PropietariosController : Controller
+    [Authorize]
+    public class PropietariosController : Controller
 	{
         private readonly IConfiguration configuration;
         private readonly RepositorioPropietario repositorioPropietario;  
@@ -24,7 +26,11 @@ namespace PrimerProyecto.Controllers
 		public ActionResult Index()
 		{  
             var lista = repositorioPropietario.ObtenerTodos();
-			return View(lista);
+            if (TempData.ContainsKey("Id"))
+                ViewBag.Id = TempData["Id"];
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            return View(lista);
 		}
 
         // GET: Propietario/Details/5
@@ -43,17 +49,25 @@ namespace PrimerProyecto.Controllers
         // POST: Propietario/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Propietario propietario)
+        public ActionResult Create(Propietario p)
         {
             try
             {
-                // TODO: Add insert logic here
-                int res = repositorioPropietario.Alta(propietario);
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                   
+                    int res = repositorioPropietario.Alta(p);
+                    TempData["Id"] = p.Id;
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                    return View(p);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View(p);
             }
         }
 
@@ -61,6 +75,10 @@ namespace PrimerProyecto.Controllers
         public ActionResult Edit(int id)
         {
             var sujeto = repositorioPropietario.ObtenerPorId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
             return View(sujeto);
         }
 
@@ -73,11 +91,14 @@ namespace PrimerProyecto.Controllers
             {
                 // TODO: Add update logic here
                 repositorioPropietario.Modificacion(p);
+                TempData["Mensaje"] = "Datos guardados correctamente";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View(p);
             }
         }
 
@@ -85,23 +106,30 @@ namespace PrimerProyecto.Controllers
         public ActionResult Delete(int id)
         {
             var sujeto = repositorioPropietario.ObtenerPorId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
             return View(sujeto);
         }
 
         // POST: Propietario/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Propietario p)
         {
             try
             {
                 // TODO: Add delete logic here
                 repositorioPropietario.Baja(id);
+                TempData["Mensaje"] = "Eliminación realizada correctamente";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View(p);
             }
         }
     }

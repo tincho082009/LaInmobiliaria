@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PrimerProyecto.Models;
 
@@ -13,6 +15,26 @@ namespace PrimerProyecto.Controllers
         public IActionResult Index()
         {
             ViewBag.Saludo = "Bienvenidos a la Inmobiliaria";
+            return View();
+        }
+        [Authorize]
+        public ActionResult Seguro()
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            return View(claims);
+        }
+
+        [Authorize(Policy = "Administrador")]
+        public ActionResult Admin()
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            return View(claims);
+        }
+
+        public ActionResult Restringido()
+        {
             return View();
         }
 

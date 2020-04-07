@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-success">Crear nuevo Pago</a>
+    <a asp-action="Create" class="btn btn-primary">Crear nuevo Pago</a>
 </p>
 <table class="table">
     <thead>
@@ -25,8 +25,16 @@
                 @Html.DisplayNameFor(model => model.Importe)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ContratoId)
+                Monto Contrato
             </th>
+            <th>
+                Fecha Inicio Contrato
+            </th>
+            <th>
+                Fecha Finalizacion Contrato
+            </th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -46,12 +54,24 @@
                 @Html.DisplayFor(modelItem => item.Importe)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ContratoId)
+            <td>
+                @(item.ContratoAlquiler.Monto)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Detalles", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Borrar", "Delete", new { id = item.Id })
+                @(item.ContratoAlquiler.FechaInicio)
+            </td>
+            <td>
+                @(item.ContratoAlquiler.FechaFinalizacion)
+            </td>
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+            </td>
+            <td>
+                @Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "btn btn-warning" })
+            </td>
+            <td>
+                @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
             </td>
         </tr>
 }

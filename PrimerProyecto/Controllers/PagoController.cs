@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +11,18 @@ using PrimerProyecto.Models;
 
 namespace PrimerProyecto.Controllers
 {
+    [Authorize]
     public class PagoController : Controller
     {
         private readonly IConfiguration configuration;
         private readonly RepositorioPago rp;
+        private readonly RepositorioContratoAlquiler rca;
 
         public PagoController(IConfiguration configuration)
         {
             this.configuration = configuration;
             rp = new RepositorioPago(configuration);
+            rca = new RepositorioContratoAlquiler(configuration);
         }
 
         // GET: Pago
@@ -38,6 +42,7 @@ namespace PrimerProyecto.Controllers
         // GET: Pago/Create
         public ActionResult Create()
         {
+            ViewBag.ContratoAlquiler = rca.ObtenerTodos();
             return View();
         }
 
@@ -61,6 +66,7 @@ namespace PrimerProyecto.Controllers
         // GET: Pago/Edit/5
         public ActionResult Edit(int id)
         {
+            ViewBag.ContratoAlquiler = rca.ObtenerTodos();
             var sujeto = rp.ObtenerPorId(id);
             return View(sujeto);
         }

@@ -73,7 +73,7 @@ namespace PrimerProyecto.Models
 					command.CommandType = CommandType.Text;
 					command.Parameters.AddWithValue("@monto", ca.Monto);
 					command.Parameters.AddWithValue("@fechaInicio", ca.FechaInicio);
-					command.Parameters.AddWithValue("@apellido", ca.FechaFinalizacion);
+					command.Parameters.AddWithValue("@fechaFinalizacion", ca.FechaFinalizacion);
 					command.Parameters.AddWithValue("@inquilinoId", ca.InquilinoId);
 					command.Parameters.AddWithValue("@inmuebleId", ca.InmuebleId);
 					command.Parameters.AddWithValue("@id", ca.Id);
