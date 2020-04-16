@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -10,6 +11,7 @@ namespace PrimerProyecto.Models
     public class Propietario
     {
         [Key]
+        [DisplayName("Codigo")]
         public int Id { get; set; }
         public string Dni { get; set; }
         public string Nombre { get; set; }

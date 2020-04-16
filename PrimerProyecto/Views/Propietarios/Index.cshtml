@@ -32,7 +32,11 @@
             </th>
             <th></th>
             <th></th>
-            <th></th>
+            @if (User.IsInRole("Administrador"))
+            {
+                <th></th>
+            }
+
         </tr>
     </thead>
     <tbody>
@@ -63,9 +67,13 @@
             <td>
                 @Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "btn btn-warning" })
             </td>
-            <td>
-                @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-            </td>
+            @if(User.IsInRole("Administrador"))
+            {
+                <td>
+                    @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                </td>
+            }
+
         </tr>
         }
     </tbody>

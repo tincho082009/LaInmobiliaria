@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Inmobiliaria_.Net_Core.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using PrimerProyecto.Models;
 
@@ -26,7 +28,9 @@ namespace PrimerProyecto.Controllers
             repositorioUsuario = new RepositorioUsuario(configuration);
         }
 
+
         // GET: Usuario
+        [Authorize(Policy = "Administrador")]
         public ActionResult Index()
         {
             var lista = repositorioUsuario.ObtenerTodos();
@@ -38,6 +42,7 @@ namespace PrimerProyecto.Controllers
         }
 
         // GET: Usuario/Create
+        [Authorize(Policy = "Administrador")]
         public ActionResult Create()
         {
             return View();
@@ -45,6 +50,7 @@ namespace PrimerProyecto.Controllers
 
         // POST: Usuario/Create
         [HttpPost]
+        [Authorize(Policy = "Administrador")]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Usuario u)
         {
@@ -97,10 +103,18 @@ namespace PrimerProyecto.Controllers
                 u.Apellido = collection["Apellido"];
                 u.Email = collection["Email"];
                 u.Rol = collection["Rol"];
-                u.Clave = collection["Clave"];
+                //u.Clave = collection["Clave"];
                 repositorioUsuario.Modificacion(u);
                 TempData["Mensaje"] = "Datos guardados correctamente";
-                return RedirectToAction(nameof(Index));
+                if (User.IsInRole("Administrador"))
+                {
+                    return RedirectToAction("Index", "Usuario");
+                }
+                else
+                {
+                    return RedirectToAction("Perfil", "Usuario");
+                }
+                
             }
             catch (Exception ex)
             {
@@ -110,7 +124,68 @@ namespace PrimerProyecto.Controllers
             }
         }
 
+        [HttpPost] 
+        [ValidateAntiForgeryToken]
+        public ActionResult CambiarPass(int id, CambioClaveView cambio)
+        {
+            Usuario user = null;
+            try
+            {
+                user = repositorioUsuario.ObtenerPorId(id);
+                // verificar clave antigüa
+                var pass = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: cambio.ClaveVieja ?? "",
+                        salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
+                        prf: KeyDerivationPrf.HMACSHA1,
+                        iterationCount: 1000,
+                        numBytesRequested: 256 / 8));
+                if (user.Clave != pass)
+                {
+                    TempData["Error"] = "Clave incorrecta";
+                    //se rederige porque no hay vista de cambio de pass, está compartida con Edit
+                    return RedirectToAction("Edit", new { id = id });
+                }
+                if (ModelState.IsValid)
+                {
+                    user.Clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: cambio.ClaveNueva,
+                        salt: System.Text.Encoding.ASCII.GetBytes(configuration["Salt"]),
+                        prf: KeyDerivationPrf.HMACSHA1,
+                        iterationCount: 1000,
+                        numBytesRequested: 256 / 8));
+                    repositorioUsuario.Modificacion(user);
+                    TempData["Mensaje"] = "Contraseña actualizada correctamente";
+                    if (User.IsInRole("Administrador"))
+                    {
+                        return RedirectToAction("Index", "Usuario");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Perfil", "Usuario");
+                    }
+                }
+                else
+                {
+                    foreach (ModelStateEntry modelState in ViewData.ModelState.Values)
+                    {
+                        foreach (ModelError error in modelState.Errors)
+                        {
+                            TempData["Error"] += error.ErrorMessage + "\n";
+                        }
+                    }
+                    return RedirectToAction("Edit", new { id = id });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                TempData["StackTrace"] = ex.StackTrace;
+                return RedirectToAction("Edit", new { id = id });
+            }
+        }
+
         // GET: Usuario/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
         {
             var u = repositorioUsuario.ObtenerPorId(id);
@@ -123,6 +198,7 @@ namespace PrimerProyecto.Controllers
 
         // POST: Usuario/Delete/5
         [HttpPost]
+        [Authorize(Policy = "Administrador")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Usuario usuario)
         {
@@ -170,6 +246,7 @@ namespace PrimerProyecto.Controllers
                     new Claim(ClaimTypes.Name, user.Email),
                     new Claim("FullName", user.Nombre + " " + user.Apellido),
                     new Claim(ClaimTypes.Role, user.Rol == "Administrador"? "Administrador":"Usuario"),
+                    new Claim("Id", user.Id + ""),
                     //new Claim(ClaimTypes.Role, "Administrador"),
                 };
 
@@ -204,7 +281,7 @@ namespace PrimerProyecto.Controllers
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
@@ -214,12 +291,23 @@ namespace PrimerProyecto.Controllers
             }
         }
 
-        // GET: Home/Login
+        [AllowAnonymous]
+        // GET: Home/Logout
         public async Task<ActionResult> Logout()
         {
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Perfil(int id)
+        {
+            var u = repositorioUsuario.ObtenerPorId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
+            return View(u);
         }
     }
 }

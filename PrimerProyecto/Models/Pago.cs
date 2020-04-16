@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,8 +9,12 @@ namespace PrimerProyecto.Models
 {
     public class Pago
     {
+        [Key]
+        [DisplayName("Codigo")]
         public int Id { get; set; }
+        [DisplayName("Numero de Pago")]
         public int NroPago { get; set; }
+        [DisplayName("Fecha de pago")]
         public DateTime FechaPago { get; set; }
         public decimal Importe { get; set; }
         public int ContratoId { get; set; }

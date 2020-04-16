@@ -29,38 +29,13 @@ namespace PrimerProyecto.Controllers
         public ActionResult Index()
         {
             var lista = rp.ObtenerTodos();
+            if (TempData.ContainsKey("Id"))
+                ViewBag.Id = TempData["Id"];
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
             return View(lista);
-        }
-
-        // GET: Pago/Details/5
-        public ActionResult Details(int id)
-        {
-            var sujeto = rp.ObtenerPorId(id);
-            return View(sujeto);
-        }
-
-        // GET: Pago/Create
-        public ActionResult Create()
-        {
-            ViewBag.ContratoAlquiler = rca.ObtenerTodos();
-            return View();
-        }
-
-        // POST: Pago/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Pago p)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-                var res = rp.Alta(p);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         // GET: Pago/Edit/5
@@ -68,6 +43,10 @@ namespace PrimerProyecto.Controllers
         {
             ViewBag.ContratoAlquiler = rca.ObtenerTodos();
             var sujeto = rp.ObtenerPorId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
             return View(sujeto);
         }
 
@@ -80,35 +59,47 @@ namespace PrimerProyecto.Controllers
             {
                 // TODO: Add update logic here
                 rp.Modificacion(p);
+                TempData["Mensaje"] = "Datos guardados correctamente";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View(p);
             }
         }
 
         // GET: Pago/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
         {
             var sujeto = rp.ObtenerPorId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
             return View(sujeto);
         }
 
         // POST: Pago/Delete/5
         [HttpPost]
+        [Authorize(Policy = "Administrador")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Pago p)
         {
             try
             {
                 // TODO: Add delete logic here
                 rp.Baja(id);
+                TempData["Mensaje"] = "Eliminación realizada correctamente";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View(p);
             }
         }
     }

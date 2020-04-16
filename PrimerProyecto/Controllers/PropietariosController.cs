@@ -103,6 +103,7 @@ namespace PrimerProyecto.Controllers
         }
 
         // GET: Propietario/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
         {
             var sujeto = repositorioPropietario.ObtenerPorId(id);
@@ -115,6 +116,7 @@ namespace PrimerProyecto.Controllers
 
         // POST: Propietario/Delete/5
         [HttpPost]
+        [Authorize(Policy = "Administrador")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Propietario p)
         {
@@ -132,6 +134,7 @@ namespace PrimerProyecto.Controllers
                 return View(p);
             }
         }
+
     }
 }
     

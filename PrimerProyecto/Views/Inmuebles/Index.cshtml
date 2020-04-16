@@ -38,7 +38,11 @@
             </th>
             <th></th>
             <th></th>
-            <th></th>
+            @if (User.IsInRole("Administrador"))
+            {
+                <th></th>
+            }
+
         </tr>
     </thead>
     <tbody>
@@ -66,17 +70,21 @@
                 @Html.DisplayFor(modelItem => item.Estado)
             </td>
             <td>
-                @(item.Propietario.Nombre + " " + item.Propietario.Apellido)
+                @Html.ActionLink(item.Propietario.Nombre + " " + item.Propietario.Apellido, "Index", "Propietarios", new { id = item.Id }, new { @class = "text-decoration-none" })
+
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new {@class="btn btn-info" })
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
             </td>
             <td>
                 @Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "btn btn-warning" })
             </td>
-            <td>
-                @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-            </td>
+            @if (User.IsInRole("Administrador"))
+            {
+                <td>
+                    @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                </td>
+            }
         </tr>
 }
     </tbody>

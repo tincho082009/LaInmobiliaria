@@ -25,15 +25,19 @@
                 @Html.DisplayNameFor(model => model.FechaFinalizacion)
             </th>
             <th>
-               Inquilino
+                Inquilino
             </th>
             <th>
-               Inmueble
+                Inmueble
             </th>
-            <th></th>   
             <th></th>
             <th></th>
-            <th></th>
+            @if (User.IsInRole("Administrador"))
+            {
+                <th></th>
+            }
+
+
 
         </tr>
     </thead>
@@ -53,20 +57,23 @@
                 @Html.DisplayFor(modelItem => item.FechaFinalizacion)
             </td>
             <td>
-                @(item.Inquilino.Nombre + " " + item.Inquilino.Apellido)
+                @Html.ActionLink(item.Inquilino.Nombre + " " + item.Inquilino.Apellido, "Index", "Inquilinos", new { id = item.Id }, new { @class = "text-decoration-none" })
             </td>
             <td>
-                @(item.Inmueble.Direccion)
+                @Html.ActionLink(item.Inmueble.Direccion, "Index", "Inmuebles", new { id = item.Id }, new { @class = "text-decoration-none" })
             </td>
             <td>
                 @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
             </td>
             <td>
-                @Html.ActionLink("Pagos", "Pagos", new { id = item.Id }, new { @class = "btn btn-warning" })
+                @Html.ActionLink("Pagar", "Pagar", new { id = item.Id }, new { @class = "btn btn-warning" })
             </td>
-            <td>
-                @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-            </td>
+            @if (User.IsInRole("Administrador"))
+            {
+                <td>
+                    @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                </td>
+            }
         </tr>
 }
     </tbody>

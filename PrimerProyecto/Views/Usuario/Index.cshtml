@@ -27,9 +27,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Rol)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Clave)
-            </th>
             <th></th>
             <th></th>
         </tr>
@@ -52,9 +49,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Rol)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Clave)
-            </td>
+
             <td>
                 @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
             </td>

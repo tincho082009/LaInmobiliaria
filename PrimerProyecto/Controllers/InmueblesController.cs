@@ -106,6 +106,7 @@ namespace PrimerProyecto.Controllers
         }
 
         // GET: Inmuebles/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
         {
             var sujeto = ri.ObtenerPorId(id); 
@@ -118,6 +119,7 @@ namespace PrimerProyecto.Controllers
 
         // POST: Inmuebles/Delete/5
         [HttpPost]
+        [Authorize(Policy = "Administrador")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Inmueble i)
         {

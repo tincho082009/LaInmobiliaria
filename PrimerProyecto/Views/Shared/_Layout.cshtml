@@ -20,43 +20,94 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PrimerProyecto</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Propietarios" asp-action="Index">Propietarios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Inmuebles" asp-action="Index">Inmuebles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Inquilinos" asp-action="Index">Inquilinos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ContratoAlquiler" asp-action="Index">Contratos de Alquileres</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pago" asp-action="Index">Pagos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark btn btn-primary" asp-area="" asp-controller="Usuario" asp-action="Login" style="margin-left: 310px">Login</a>
-                        </li>
-                    </ul>
-                </div>
+        <nav class="site-header sticky-top py-1 bg-dark navbar-dark">
+            <div class="container d-flex flex-column flex-md-row justify-content-between">
+                <a class="py-2 btn btn-dark" asp-controller="Home" asp-action="Index"><span class="lnr lnr-home"></span><img src="https://image.flaticon.com/icons/svg/609/609803.svg" width="25px" height="25px" />-Inicio</a>
+                @if (User.IsInRole("Administrador"))
+                {
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Propietarios" asp-action="Index"><span class="lnr lnr-user"></span> Propietarios</a>
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Inmuebles" asp-action="Index"><span class="lnr lnr-apartment"></span> Inmuebles</a>
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Inquilinos" asp-action="Index"><span class="lnr lnr-enter"></span>Inquilinos</a>
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Pago" asp-action="Index"><span class="lnr lnr-enter"></span>Pagos</a>
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="ContratoAlquiler" asp-action="Index"><span class="lnr lnr-enter"></span>Alquileres</a>
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Usuario" asp-action="Index"><span class="lnr lnr-enter"></span>Usuarios</a>
+                    <a class="py-2 d-none d-md-inline-block float-right btn btn-danger" asp-controller="Usuario" asp-action="Logout"><i class="lnr lnr-exit"></i> Salir</a>
+                }
+                @if (User.IsInRole("Propietario"))
+                {
+                    <!-- <a class="py-2 d-none d-md-inline-block" asp-controller="Propietarios" asp-action="Perfil"><span class="lnr lnr-user"></span> Mis Datos</a> -->
+                }
+                @if (User.IsInRole("Usuario"))
+                {
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Propietarios" asp-action="Index"><span class="lnr lnr-user"></span> Propietarios</a>
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Inmuebles" asp-action="Index"><span class="lnr lnr-apartment"></span> Inmuebles</a>
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Inquilinos" asp-action="Index"><span class="lnr lnr-enter"></span>Inquilinos</a>
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Pago" asp-action="Index"><span class="lnr lnr-enter"></span>Pagos</a>
+                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="ContratoAlquiler" asp-action="Index"><span class="lnr lnr-enter"></span>Alquileres</a>
+
+                    <div class="dropdown">
+                        <a class="btn btn-primary dropdown-toggle text-light" href="#" role="button" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent" data-display="static">
+                            <span class="lnr lnr-user"></span> @User.Identity.Name
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            @Html.ActionLink("Perfil", "Perfil", "Usuario", new { id = User.Claims.ToList()[3].Value }, new { @class = "dropdown-item text-dark" })                        
+                            <a class="dropdown-item text-dark" asp-controller="Usuario" asp-action="Logout"><i class="lnr lnr-exit"></i> Salir</a>
+                        </div>
+                    </div>
+                    <!--<a class="py-2 d-none d-md-inline-block float-right btn btn-danger" asp-controller="Usuario" asp-action="Logout"><i class="lnr lnr-exit"></i> Salir</a>  -->
+                }
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a class="py-2 d-none d-md-inline-block float-right btn btn-primary" asp-controller="Usuario" asp-action="Login"><span class="lnr lnr-home"></span>Acceder </a>
+                }
             </div>
         </nav>
     </header>
     <div class="container">
         <partial name="_CookieConsentPartial" />
+        @if (ViewBag.Id != null)
+        {//alta exitosa
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>¡Éxito!</strong> La entidad fue dada de alta con id: @ViewBag.Id
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                </button>
+            </div>
+        }
+        else if (ViewBag.Mensaje != null)
+        {//cartel general
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Información:</strong> @ViewBag.Mensaje
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                </button>
+            </div>
+        }
+        else if (ViewBag.Error != null)
+        {//Error
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>¡Error!</strong> @ViewBag.Error
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                </button>
+            </div>
+        }
+        else if (!String.IsNullOrWhiteSpace(ViewBag.Error))
+        {//ocurrió un error
+            <environment names="Development">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>¡Error!</strong> Ocurrió: @ViewBag.Error
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                    </button>
+                    <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false"><span class="lnr lnr-plus-circle"></span></a>
+                    <div class="collapse multi-collapse" id="multiCollapseExample1">
+                        @ViewBag.StackTrace
+                    </div>
+                </div>
+            </environment>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -90,11 +141,46 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.table').DataTable();
+            $('.table').DataTable({
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla =(",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                }
+            });
         });
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
+   
+    <script type="text/javascript">
+        function init() {
+            $('.alert').alert();
+        }
+    </script>
 </body>
 </html>
