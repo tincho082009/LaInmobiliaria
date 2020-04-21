@@ -20,9 +20,9 @@ namespace PrimerProyecto.Controllers
         private readonly IRepositorio<ContratoAlquiler> rca;
         private readonly IRepositorio<Inmueble> rinm;
         private readonly IRepositorio<Inquilino> rinq;
-        private readonly IRepositorio<Pago> rp;
+        private readonly IRepositorioPago rp;
 
-        public ContratoAlquilerController(IRepositorio<ContratoAlquiler> rca, IRepositorio<Inmueble> rinm, IRepositorio<Inquilino> rinq, IRepositorio<Pago> rp, IConfiguration configuration)
+        public ContratoAlquilerController(IRepositorio<ContratoAlquiler> rca, IRepositorio<Inmueble> rinm, IRepositorio<Inquilino> rinq, IRepositorioPago rp, IConfiguration configuration)
         { 
             this.rca = rca;
             this.rinm = rinm;

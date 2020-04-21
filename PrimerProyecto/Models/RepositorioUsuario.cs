@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PrimerProyecto.Models
 {
-    public class RepositorioUsuario : RepositorioBase, IRepositorio<Usuario>
+    public class RepositorioUsuario : RepositorioBase, IRepositorioUsuario
     {
 		public RepositorioUsuario(IConfiguration configuration):base(configuration)
 		{

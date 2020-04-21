@@ -15,10 +15,10 @@ namespace PrimerProyecto.Controllers
     public class PagoController : Controller
     {
         private readonly IConfiguration configuration;
-        private readonly IRepositorio<Pago> rp;
+        private readonly IRepositorioPago rp;
         private readonly IRepositorio<ContratoAlquiler> rca;
 
-        public PagoController(IConfiguration configuration, IRepositorio<Pago> rp, IRepositorio<ContratoAlquiler> rca)
+        public PagoController(IConfiguration configuration, IRepositorioPago rp, IRepositorio<ContratoAlquiler> rca)
         {
             this.configuration = configuration;
             this.rp = rp;

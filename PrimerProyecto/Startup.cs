@@ -52,9 +52,14 @@ namespace PrimerProyecto
             services.AddTransient<IRepositorioPropietario, RepositorioPropietario>();
             services.AddTransient<IRepositorio<Inquilino>, RepositorioInquilino>();
             services.AddTransient<IRepositorio<Inmueble>, RepositorioInmueble>();
+            services.AddTransient<IRepositorio<Pago>, RepositorioPago>();
+            services.AddTransient<IRepositorioPago, RepositorioPago>();
+            services.AddTransient<IRepositorio<ContratoAlquiler>, RepositorioContratoAlquiler>();
+            services.AddTransient<IRepositorio<Usuario>, RepositorioUsuario>();
+            services.AddTransient<IRepositorioUsuario, RepositorioUsuario>();
 
             //services.AddDbContext<DataContext>(
-              //options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            //options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
