@@ -8,15 +8,10 @@ using System.Threading.Tasks;
 
 namespace PrimerProyecto.Models
 {
-    public class RepositorioPropietario
+    public class RepositorioPropietario : RepositorioBase, IRepositorioPropietario
     {
-		private readonly string connectionString;
-		private readonly IConfiguration configuration;
-
-		public RepositorioPropietario(IConfiguration configuration)
-			{
-			this.configuration = configuration;
-			connectionString = configuration["ConnectionStrings:DefaultConnection"];
+		public RepositorioPropietario(IConfiguration configuration) : base(configuration)
+		{
 		}
 
 		public int Alta(Propietario p){

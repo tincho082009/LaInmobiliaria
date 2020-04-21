@@ -8,15 +8,11 @@ using System.Threading.Tasks;
 
 namespace PrimerProyecto.Models
 {
-    public class RepositorioPago
+    public class RepositorioPago : RepositorioBase, IRepositorio<Pago>
     {
-		private readonly string connectionString;
-		private readonly IConfiguration configuration;
-
-		public RepositorioPago(IConfiguration configuration)
+		public RepositorioPago(IConfiguration configuration): base(configuration)
 		{
-			this.configuration = configuration;
-			connectionString = configuration["ConnectionStrings:DefaultConnection"];
+
 		}
 		public int Alta(Pago p)
 		{
@@ -111,6 +107,44 @@ namespace PrimerProyecto.Models
 								FechaFinalizacion = reader.GetDateTime(7),
 							}
 			
+						};
+						res.Add(p);
+					}
+					connection.Close();
+				}
+			}
+			return res;
+		}
+		public IList<Pago> ObtenerTodosConDatosExtras()
+		{
+			IList<Pago> res = new List<Pago>();
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				string sql = $"SELECT p.Id, NroPago, FechaPago, Importe, ContratoId," +
+					$" ca.Monto, ca.FechaInicio, ca.FechaFinalizacion" +
+					$" FROM Pago p INNER JOIN ContratoAlquiler ca ON p.ContratoId = ca.Id";
+				using (SqlCommand command = new SqlCommand(sql, connection))
+				{
+					command.CommandType = CommandType.Text;
+					connection.Open();
+					var reader = command.ExecuteReader();
+					while (reader.Read())
+					{
+						Pago p = new Pago
+						{
+							Id = reader.GetInt32(0),
+							NroPago = reader.GetInt32(1),
+							FechaPago = reader.GetDateTime(2),
+							Importe = reader.GetDecimal(3),
+							ContratoId = reader.GetInt32(4),
+							ContratoAlquiler = new ContratoAlquiler
+							{
+								Id = reader.GetInt32(4),
+								Monto = reader.GetDecimal(5),
+								FechaInicio = reader.GetDateTime(6),
+								FechaFinalizacion = reader.GetDateTime(7),								
+							}
+
 						};
 						res.Add(p);
 					}

@@ -14,19 +14,20 @@ namespace PrimerProyecto.Controllers
     public class InmueblesController : Controller
     {
         private readonly IConfiguration configuration;
-        private readonly RepositorioInmueble ri;
-        private readonly RepositorioPropietario rp;
+        private readonly IRepositorio<Inmueble> ri;
+        private readonly IRepositorioPropietario rp;
 
-        public InmueblesController(IConfiguration configuration)
+        public InmueblesController(IConfiguration configuration, IRepositorio<Inmueble> ri, IRepositorioPropietario rp)
         {
             this.configuration = configuration;
-            ri = new RepositorioInmueble(configuration);
-            rp = new RepositorioPropietario(configuration);
+            this.ri = ri;
+            this.rp = rp;
         }
 
         // GET: Inmuebles
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
+            ViewBag.IdSeleccionado = id;
             var lista = ri.ObtenerTodos();
             if (TempData.ContainsKey("Id"))
                 ViewBag.Id = TempData["Id"];

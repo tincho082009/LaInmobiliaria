@@ -8,15 +8,11 @@ using System.Threading.Tasks;
 
 namespace PrimerProyecto.Models
 {
-    public class RepositorioUsuario
+    public class RepositorioUsuario : RepositorioBase, IRepositorio<Usuario>
     {
-		private readonly string connectionString;
-		private readonly IConfiguration configuration;
-
-		public RepositorioUsuario(IConfiguration configuration)
+		public RepositorioUsuario(IConfiguration configuration):base(configuration)
 		{
-			this.configuration = configuration;
-			connectionString = configuration["ConnectionStrings:DefaultConnection"];
+
 		}
 
 		public int Alta(Usuario u)

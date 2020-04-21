@@ -17,24 +17,24 @@ namespace PrimerProyecto.Controllers
     public class ContratoAlquilerController : Controller
     {
         private readonly IConfiguration configuration;
-        private readonly RepositorioContratoAlquiler rca;
-        private readonly RepositorioInmueble rinm;
-        private readonly RepositorioInquilino rinq;
-        private readonly RepositorioPago rp;
+        private readonly IRepositorio<ContratoAlquiler> rca;
+        private readonly IRepositorio<Inmueble> rinm;
+        private readonly IRepositorio<Inquilino> rinq;
+        private readonly IRepositorio<Pago> rp;
 
-        public ContratoAlquilerController(IConfiguration configuration)
-        {
+        public ContratoAlquilerController(IRepositorio<ContratoAlquiler> rca, IRepositorio<Inmueble> rinm, IRepositorio<Inquilino> rinq, IRepositorio<Pago> rp, IConfiguration configuration)
+        { 
+            this.rca = rca;
+            this.rinm = rinm;
+            this.rinq = rinq;
+            this.rp = rp;
             this.configuration = configuration;
-            rca = new RepositorioContratoAlquiler(configuration);
-            rinm = new RepositorioInmueble(configuration);
-            rinq = new RepositorioInquilino(configuration);
-            rp = new RepositorioPago(configuration);
         }
 
         // GET: ContratoAlquiler
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            
+            ViewBag.IdSeleccionado = id;
             var lista = rca.ObtenerTodos();
             if (TempData.ContainsKey("Id"))
                 ViewBag.Id = TempData["Id"];
@@ -158,8 +158,13 @@ namespace PrimerProyecto.Controllers
             var nroCuota = listaVieja.Count;
             var fechaInicio = contrato.FechaInicio;
             var fechaFinal = contrato.FechaFinalizacion;
-
-            var mesFinal = Convert.ToInt32(fechaFinal.Month.ToString()); ;
+            TimeSpan t = fechaFinal - fechaInicio;
+            var meses = t.TotalDays / 30;
+           var mes = (int) Math.Round(meses);
+            //PENDIENTE
+           
+            
+            /*var mesFinal = Convert.ToInt32(fechaFinal.Month.ToString()); ;
             var diaFinal = Convert.ToInt32(fechaFinal.Day.ToString()); ;
             var añoFinal = Convert.ToInt32(fechaFinal.Year.ToString()); ;
 
@@ -197,7 +202,7 @@ namespace PrimerProyecto.Controllers
                     }
                 }
             }
-
+            */
             if(nroCuota >= mes)
             {
                 TempData["Error"] = "Hay que confiar, porque si no confias no hay confianza";
@@ -216,6 +221,15 @@ namespace PrimerProyecto.Controllers
                 return RedirectToAction("Index", "Pago");
             }
             
+        }
+        public ActionResult Buscar(int id)
+        {
+            var lista = rp.ObtenerTodosPorContratoId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
+            return View(lista);
         }
     }
 }

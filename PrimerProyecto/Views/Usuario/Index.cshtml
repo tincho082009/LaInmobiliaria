@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<PrimerProyecto.Models.Usuario>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Usuarios";
 }
 
-<h1>Index</h1>
+<h1>Usuarios</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Crear nuevo Usuario</a>
@@ -28,7 +28,6 @@
                 @Html.DisplayNameFor(model => model.Rol)
             </th>
             <th></th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -51,10 +50,10 @@
             </td>
 
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
-            </td>
-            <td>
-                @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                <div class="btn-group">
+                    @Html.ActionLink("", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-info fas fa-edit", @title = "Editar" })               
+                    @Html.ActionLink("", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-danger fas fa-trash-alt", @title = "Borrar" })                  
+                </div>
             </td>
         </tr>
 }

@@ -14,17 +14,18 @@ namespace PrimerProyecto.Controllers
     public class PropietariosController : Controller
 	{
         private readonly IConfiguration configuration;
-        private readonly RepositorioPropietario repositorioPropietario;  
+        private readonly IRepositorio<Propietario> repositorioPropietario;  
 
-        public PropietariosController(IConfiguration configuration)
+        public PropietariosController(IRepositorio<Propietario> repo, IConfiguration configuration)
         {
             this.configuration = configuration;
-            repositorioPropietario = new RepositorioPropietario(configuration);
+            this.repositorioPropietario = repo;
         }
 
-		// GET: Propietario
-		public ActionResult Index()
-		{  
+        // GET: Propietario
+        public ActionResult Index(int id)
+        {
+            ViewBag.IdSeleccionado = id;
             var lista = repositorioPropietario.ObtenerTodos();
             if (TempData.ContainsKey("Id"))
                 ViewBag.Id = TempData["Id"];

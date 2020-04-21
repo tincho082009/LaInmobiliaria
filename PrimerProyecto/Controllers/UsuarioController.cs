@@ -20,12 +20,12 @@ namespace PrimerProyecto.Controllers
     public class UsuarioController : Controller
     {
         private readonly IConfiguration configuration;
-        private readonly RepositorioUsuario repositorioUsuario;
+        private readonly IRepositorio<Usuario> repositorioUsuario;
 
-        public UsuarioController(IConfiguration configuration)
+        public UsuarioController(IConfiguration configuration, IRepositorio<Usuario> repositorio)
         {
             this.configuration = configuration;
-            repositorioUsuario = new RepositorioUsuario(configuration);
+            this.repositorioUsuario = repositorio;
         }
 
 

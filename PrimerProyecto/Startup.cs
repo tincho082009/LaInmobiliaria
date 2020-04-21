@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PrimerProyecto.Models;
 
 namespace PrimerProyecto
 {
@@ -46,6 +48,13 @@ namespace PrimerProyecto
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddTransient<IRepositorio<Propietario>, RepositorioPropietario>();
+            services.AddTransient<IRepositorioPropietario, RepositorioPropietario>();
+            services.AddTransient<IRepositorio<Inquilino>, RepositorioInquilino>();
+            services.AddTransient<IRepositorio<Inmueble>, RepositorioInmueble>();
+
+            //services.AddDbContext<DataContext>(
+              //options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -51,7 +51,7 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            @Html.ActionLink("Perfil", "Perfil", "Usuario", new { id = User.Claims.ToList()[3].Value }, new { @class = "dropdown-item text-dark" })                        
+                            @Html.ActionLink("Perfil", "Perfil", "Usuario", new { id = User.Claims.ToList()[3].Value }, new { @class = "dropdown-item text-dark" })
                             <a class="dropdown-item text-dark" asp-controller="Usuario" asp-action="Logout"><i class="lnr lnr-exit"></i> Salir</a>
                         </div>
                     </div>
@@ -173,10 +173,11 @@
             });
         });
     </script>
+    <script src="https://kit.fontawesome.com/e0b2ab0134.js" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
-   
+
     <script type="text/javascript">
         function init() {
             $('.alert').alert();
