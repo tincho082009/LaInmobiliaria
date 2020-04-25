@@ -14,12 +14,14 @@ namespace PrimerProyecto.Controllers
     public class PropietariosController : Controller
 	{
         private readonly IConfiguration configuration;
-        private readonly IRepositorio<Propietario> repositorioPropietario;  
+        private readonly IRepositorioPropietario repositorioPropietario;
+        private readonly IRepositorioInmueble repositorioInmueble;
 
-        public PropietariosController(IRepositorio<Propietario> repo, IConfiguration configuration)
-        {
+        public PropietariosController(IRepositorioPropietario repositorioPropietario,  IRepositorioInmueble repositorioInmueble, IConfiguration configuration)
+        {          
+            this.repositorioPropietario = repositorioPropietario;
+            this.repositorioInmueble = repositorioInmueble;
             this.configuration = configuration;
-            this.repositorioPropietario = repo;
         }
 
         // GET: Propietario
@@ -134,6 +136,15 @@ namespace PrimerProyecto.Controllers
                 ViewBag.StackTrate = ex.StackTrace;
                 return View(p);
             }
+        }
+        public ActionResult Buscar(int id)
+        {
+            var lista = repositorioInmueble.ObtenerTodosPorPropietarioId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
+            return View(lista);
         }
 
     }

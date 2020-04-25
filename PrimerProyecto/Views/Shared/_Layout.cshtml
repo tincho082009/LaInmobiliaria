@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PrimerProyecto</title>
+    <title>@ViewData["Title"] - Inmobiliaria</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -16,110 +16,248 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
- 
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <style>
+
+        body {
+            font-size: 1rem;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5 {
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        h6 {
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .bg-primary {
+            background-color: #35CBDF !important;
+        }
+
+        /* ========== Top Navigation ========== */
+        .top-nav {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            height: 80px;
+            transition: 0.5s ease-in;
+            -webkit-transition: 0.5s ease-in;
+            -moz-transition: 0.5s ease-in;
+            background-color: #212121
+        }
+
+            .top-nav .navbar-nav li .nav-link {
+                color: #fff;
+                font-size: 14px;
+                padding: 29px 15px;
+                font-weight: 600;
+                text-transform: uppercase;
+                transition: 0.5s ease-in;
+                -webkit-transition: 0.5s ease-in;
+                -moz-transition: 0.5s ease-in;
+            }
+
+            .top-nav li a.nav-link:hover, .top-nav .nav-item.active a.nav-link {
+                border-bottom: 3px solid #D35400;
+                color: #D35400;
+                transition: 0.5s ease-in;
+                -webkit-transition: 0.5s ease-in;
+                -moz-transition: 0.5s ease-in;
+            }
+
+            .top-nav .navbar-brand {
+                font-size: 28px;
+                color: #fff;
+                font-family: 'Montserrat', sans-serif;
+            }
+
+        .navbar-brand {
+            color: #212121;
+        }
+
+        .navbar-nav li .nav-link {
+            color: #212121;
+            padding: 19px 15px;
+            transition: 0.5s ease-in;
+            -webkit-transition: 0.5s ease-in;
+            -moz-transition: 0.5s ease-in;
+        }
+        /* ========== Diseño Formularios ========== */
+        .formBox {
+            margin-top: 50px;
+            padding: 50px;
+        }
+
+        .titulo {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-size: 48px;
+        }
+
+        .inputBox {
+            position: relative;
+            box-sizing: border-box;
+            margin-bottom: 50px;
+        }
+
+        .inputBox .inputText {
+            position: absolute;
+            font-size: 24px;
+            line-height: 50px;
+            transition: .5s;
+            opacity: .5;
+        }
+
+        .inputBox .input {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 24px;
+            border-bottom: 1px solid rgba(0,0,0,.5);
+        }
+
+        .focus .inputText {
+            transform: translateY(-30px);
+            font-size: 18px;
+            opacity: 1;
+            color: #D35400;
+        }
+
+        .button {
+            width: 100%;
+            height: 50px;
+            border: none;
+            outline: none;
+            background: #D35400;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="site-header sticky-top py-1 bg-dark navbar-dark">
-            <div class="container d-flex flex-column flex-md-row justify-content-between">
-                <a class="py-2 btn btn-dark" asp-controller="Home" asp-action="Index"><span class="lnr lnr-home"></span><img src="https://image.flaticon.com/icons/svg/609/609803.svg" width="25px" height="25px" />-Inicio</a>
-                @if (User.IsInRole("Administrador"))
-                {
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Propietarios" asp-action="Index"><span class="lnr lnr-user"></span> Propietarios</a>
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Inmuebles" asp-action="Index"><span class="lnr lnr-apartment"></span> Inmuebles</a>
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Inquilinos" asp-action="Index"><span class="lnr lnr-enter"></span>Inquilinos</a>
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Pago" asp-action="Index"><span class="lnr lnr-enter"></span>Pagos</a>
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="ContratoAlquiler" asp-action="Index"><span class="lnr lnr-enter"></span>Alquileres</a>
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Usuario" asp-action="Index"><span class="lnr lnr-enter"></span>Usuarios</a>
-                    <a class="py-2 d-none d-md-inline-block float-right btn btn-danger" asp-controller="Usuario" asp-action="Logout"><i class="lnr lnr-exit"></i> Salir</a>
-                }
-                @if (User.IsInRole("Propietario"))
-                {
-                    <!-- <a class="py-2 d-none d-md-inline-block" asp-controller="Propietarios" asp-action="Perfil"><span class="lnr lnr-user"></span> Mis Datos</a> -->
-                }
-                @if (User.IsInRole("Usuario"))
-                {
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Propietarios" asp-action="Index"><span class="lnr lnr-user"></span> Propietarios</a>
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Inmuebles" asp-action="Index"><span class="lnr lnr-apartment"></span> Inmuebles</a>
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Inquilinos" asp-action="Index"><span class="lnr lnr-enter"></span>Inquilinos</a>
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="Pago" asp-action="Index"><span class="lnr lnr-enter"></span>Pagos</a>
-                    <a class="py-2 d-none d-md-inline-block btn btn-dark" asp-controller="ContratoAlquiler" asp-action="Index"><span class="lnr lnr-enter"></span>Alquileres</a>
+        <nav class="navbar navbar-expand-md  top-nav">
+            <div class="container">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index"><span class="lnr lnr-home"></span><strong>La Inmobiliaria</strong> </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link float-right" asp-controller="Usuario" asp-action="Login">Login<span class="sr-only">(current)</span></a>
+                            </li>
+                        }
+                        else
+                        {
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" asp-controller="Propietarios" asp-action="Index">Propietarios<span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-controller="Inmuebles" asp-action="Index">Inmuebles<span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-controller="Inquilinos" asp-action="Index">Inquilinos<span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-controller="ContratoAlquiler" asp-action="Index">Alquileres<span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-controller="Pago" asp-action="Index">Pagos<span class="sr-only">(current)</span></a>
+                                    </li>
+                                    @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-controller="Usuario" asp-action="Index">Usuarios<span class="sr-only">(current)</span></a>
+                                        </li>
+                                    }
+                                    <li class="nav-item">
+                                        <a class="nav-link" style="color: #943126 " asp-controller="Usuario" asp-action="Logout">Logout<span class="sr-only">(current)</span></a>                                                        
+                                    </li>
+                                </ul>
+                            </div>
 
-                    <div class="dropdown">
-                        <a class="btn btn-primary dropdown-toggle text-light" href="#" role="button" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent" data-display="static">
-                            <span class="lnr lnr-user"></span> @User.Identity.Name
-                        </a>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            @Html.ActionLink("Perfil", "Perfil", "Usuario", new { id = User.Claims.ToList()[3].Value }, new { @class = "dropdown-item text-dark" })
-                            <a class="dropdown-item text-dark" asp-controller="Usuario" asp-action="Logout"><i class="lnr lnr-exit"></i> Salir</a>
-                        </div>
-                    </div>
-                    <!--<a class="py-2 d-none d-md-inline-block float-right btn btn-danger" asp-controller="Usuario" asp-action="Logout"><i class="lnr lnr-exit"></i> Salir</a>  -->
-                }
-                @if (!User.Identity.IsAuthenticated)
-                {
-                    <a class="py-2 d-none d-md-inline-block float-right btn btn-primary" asp-controller="Usuario" asp-action="Login"><span class="lnr lnr-home"></span>Acceder </a>
-                }
+
+                            <!---->
+
+                        }
+
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        @if (ViewBag.Id != null)
-        {//alta exitosa
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>¡Éxito!</strong> La entidad fue dada de alta con id: @ViewBag.Id
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
-                </button>
-            </div>
-        }
-        else if (ViewBag.Mensaje != null)
-        {//cartel general
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
-                <strong>Información:</strong> @ViewBag.Mensaje
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
-                </button>
-            </div>
-        }
-        else if (ViewBag.Error != null)
-        {//Error
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>¡Error!</strong> @ViewBag.Error
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
-                </button>
-            </div>
-        }
-        else if (!String.IsNullOrWhiteSpace(ViewBag.Error))
-        {//ocurrió un error
-            <environment names="Development">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>¡Error!</strong> Ocurrió: @ViewBag.Error
+
+    <main role="main">
+        <div class="container mt-3">
+            @if (ViewBag.Id != null)
+            {//alta exitosa
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>¡Éxito!</strong> La entidad fue dada de alta con id: @ViewBag.Id
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
                     </button>
-                    <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false"><span class="lnr lnr-plus-circle"></span></a>
-                    <div class="collapse multi-collapse" id="multiCollapseExample1">
-                        @ViewBag.StackTrace
-                    </div>
                 </div>
-            </environment>
-        }
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - PrimerProyecto - <a href="#">Privacy</a>
+            }
+            else if (ViewBag.Mensaje != null)
+            {//cartel general
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <strong>Información:</strong> @ViewBag.Mensaje
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                    </button>
+                </div>
+            }
+            else if (ViewBag.Error != null)
+            {//alta exitosa
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>¡Error!</strong> @ViewBag.Error
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                    </button>
+                </div>
+            }
+            else if (!String.IsNullOrWhiteSpace(ViewBag.Error))
+            {//ocurrió un error
+                <environment names="Development">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>¡Error!</strong> Ocurrió: @ViewBag.Error
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                        </button>
+                        <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false"><span class="lnr lnr-plus-circle"></span></a>
+                        <div class="collapse multi-collapse" id="multiCollapseExample1">
+                            @ViewBag.StackTrace
+                        </div>
+                    </div>
+                </environment>
+            }
+            <div class="m-1 p-1">
+                @RenderBody()
+            </div>
         </div>
-    </footer>
+    </main>
+
+    <!-- <footer class="border-top footer text-muted">
+         <div class="container">
+             &copy; 2020 - PrimerProyecto - <a href="#">Privacy</a>
+         </div>
+     </footer> -->
 
     <environment include="Development">
+        
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
     </environment>
@@ -174,8 +312,8 @@
         });
     </script>
     <script src="https://kit.fontawesome.com/e0b2ab0134.js" crossorigin="anonymous"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 
     <script type="text/javascript">

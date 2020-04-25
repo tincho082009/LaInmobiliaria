@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PrimerProyecto.Models;
@@ -14,14 +15,16 @@ namespace PrimerProyecto.Controllers
     public class InmueblesController : Controller
     {
         private readonly IConfiguration configuration;
-        private readonly IRepositorio<Inmueble> ri;
+        private readonly IRepositorioInmueble ri;
         private readonly IRepositorioPropietario rp;
+        private readonly IRepositorioContratoAlquiler rca;
 
-        public InmueblesController(IConfiguration configuration, IRepositorio<Inmueble> ri, IRepositorioPropietario rp)
+        public InmueblesController(IConfiguration configuration, IRepositorioInmueble ri, IRepositorioPropietario rp, IRepositorioContratoAlquiler ca)
         {
             this.configuration = configuration;
             this.ri = ri;
             this.rp = rp;
+            this.rca = ca;
         }
 
         // GET: Inmuebles
@@ -137,6 +140,15 @@ namespace PrimerProyecto.Controllers
                 ViewBag.StackTrate = ex.StackTrace;
                 return View(i);
             }
+        }
+        public ActionResult Buscar(int id)
+        {
+            var lista = rca.ObtenerPorInmuebleId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
+            return View(lista);
         }
     }
 }

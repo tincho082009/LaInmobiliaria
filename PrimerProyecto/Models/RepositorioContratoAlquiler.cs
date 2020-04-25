@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PrimerProyecto.Models
 {
-    public class RepositorioContratoAlquiler : RepositorioBase, IRepositorio<ContratoAlquiler>
+    public class RepositorioContratoAlquiler : RepositorioBase, IRepositorioContratoAlquiler
     {
 		public RepositorioContratoAlquiler(IConfiguration configuration):base(configuration)
 		{
@@ -154,6 +154,51 @@ namespace PrimerProyecto.Models
 				}
 			}
 			return ca;
+		}
+
+		public IList<ContratoAlquiler> ObtenerPorInmuebleId(int id)
+		{
+			IList<ContratoAlquiler> res = new List<ContratoAlquiler>();
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				string sql = $"SELECT ca.Id, Monto, FechaInicio, FechaFinalizacion, InquilinoId, InmuebleId, inq.Nombre, inq.Apellido , i.Direccion " +
+					$" FROM ContratoAlquiler ca INNER JOIN Inmueble i ON ca.InmuebleId = i.Id " +
+					$"INNER JOIN Inquilino inq ON ca.InquilinoId = inq.Id " +
+					$"WHERE InmuebleId = @inmuebleId";
+				using (SqlCommand command = new SqlCommand(sql, connection))
+				{
+					command.Parameters.Add("@inmuebleId", SqlDbType.Int).Value = id;
+					command.CommandType = CommandType.Text;
+					connection.Open();
+					var reader = command.ExecuteReader();
+					while (reader.Read())
+					{
+						ContratoAlquiler ca = new ContratoAlquiler
+						{
+							Id = reader.GetInt32(0),
+							Monto = reader.GetDecimal(1),
+							FechaInicio = reader.GetDateTime(2),
+							FechaFinalizacion = reader.GetDateTime(3),
+							InquilinoId = reader.GetInt32(4),
+							InmuebleId = reader.GetInt32(5),
+							Inquilino = new Inquilino
+							{
+								Id = reader.GetInt32(4),
+								Nombre = reader.GetString(6),
+								Apellido = reader.GetString(7),
+							},
+							Inmueble = new Inmueble
+							{
+								Id = reader.GetInt32(5),
+								Direccion = reader.GetString(8),
+							}
+						};
+						res.Add(ca);
+					}
+					connection.Close();
+				}
+			}
+			return res;
 		}
 	}
 }

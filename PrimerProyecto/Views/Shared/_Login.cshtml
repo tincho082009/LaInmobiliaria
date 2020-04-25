@@ -1,0 +1,112 @@
+﻿@model PrimerProyecto.Models.LoginView
+
+
+<style>
+
+    .login-block {
+        float: left;
+        width: 100%;
+        padding: 50px 0px 50px;
+    }
+
+    .banner-sec {
+        background: url(https://static.pexels.com/photos/33972/pexels-photo.jpg) no-repeat left bottom;
+        background-size: cover;
+        min-height: 500px;
+        border-radius: 0 10px 10px 0;
+        padding: 0;
+    }
+
+    .containerLogin {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 15px 20px 0px rgba(0,0,0,0.1);
+    }
+
+    .carousel-inner {
+        border-radius: 0 10px 10px 0;
+        max-height: 500px;
+    }
+
+    .carousel-caption {
+        text-align: left;
+        left: 5%;
+    }
+
+    .login-sec {
+        padding: 50px 30px;
+        position: relative;
+    }
+
+        .login-sec h2 {
+            margin-bottom: 30px;
+            font-weight: 800;
+            font-size: 30px;
+            color: rgb(63, 63, 63);
+        }
+
+            .login-sec h2:after {
+                content: " ";
+                width: 100px;
+                height: 5px;
+                background: #FEB58A;
+                display: block;
+                margin-top: 20px;
+                border-radius: 3px;
+                margin-left: auto;
+                margin-right: auto
+            }
+
+    .btn-login {
+        background: #D35400;
+        color: #fff;
+        font-weight: 600;
+    }
+</style>
+
+<section class="login-block">
+    <div class="containerLogin">
+        <div class="row">
+            <div class="col-md-4 login-sec">
+                <h2 class="text-center">Ingresa ahora!</h2>
+                <form class="login-form" asp-action="Login">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label text-uppercase"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Clave" class="control-label text-uppercase"></label>
+                        <input asp-for="Clave" class="form-control" />
+                        <span asp-validation-for="Clave" class="text-danger"></span>
+                    </div>
+                    <div class="form-check">
+                        <button type="submit" class="btn btn-login float-right">Ingresar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8 banner-sec">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active">
+                            <img class="d-block img-fluid" src="https://static.pexels.com/photos/33972/pexels-photo.jpg" alt="First slide">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block img-fluid" src="https://images.pexels.com/photos/7097/people-coffee-tea-meeting.jpg" alt="First slide">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block img-fluid" src="https://images.pexels.com/photos/872957/pexels-photo-872957.jpeg" alt="First slide">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

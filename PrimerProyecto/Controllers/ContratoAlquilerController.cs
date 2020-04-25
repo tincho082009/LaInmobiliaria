@@ -17,12 +17,12 @@ namespace PrimerProyecto.Controllers
     public class ContratoAlquilerController : Controller
     {
         private readonly IConfiguration configuration;
-        private readonly IRepositorio<ContratoAlquiler> rca;
+        private readonly IRepositorioContratoAlquiler rca;
         private readonly IRepositorio<Inmueble> rinm;
         private readonly IRepositorio<Inquilino> rinq;
         private readonly IRepositorioPago rp;
 
-        public ContratoAlquilerController(IRepositorio<ContratoAlquiler> rca, IRepositorio<Inmueble> rinm, IRepositorio<Inquilino> rinq, IRepositorioPago rp, IConfiguration configuration)
+        public ContratoAlquilerController(IRepositorioContratoAlquiler rca, IRepositorio<Inmueble> rinm, IRepositorio<Inquilino> rinq, IRepositorioPago rp, IConfiguration configuration)
         { 
             this.rca = rca;
             this.rinm = rinm;
@@ -70,7 +70,10 @@ namespace PrimerProyecto.Controllers
             {
                 if (ModelState.IsValid)
                 {
-
+                    var inmId  = ca.InmuebleId;
+                    var inm = rinm.ObtenerPorId(inmId);
+                    inm.Estado = false; 
+                    rinm.Modificacion(inm);
                     int res = rca.Alta(ca);
                     TempData["Id"] = ca.Id;
                     return RedirectToAction(nameof(Index));
@@ -123,12 +126,41 @@ namespace PrimerProyecto.Controllers
         [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
         {
-            var sujeto = rca.ObtenerPorId(id);
             if (TempData.ContainsKey("Mensaje"))
                 ViewBag.Mensaje = TempData["Mensaje"];
             if (TempData.ContainsKey("Error"))
                 ViewBag.Error = TempData["Error"];
-            return View(sujeto);
+            var contrato = rca.ObtenerPorId(id);        
+            var lista = rp.ObtenerTodosPorContratoId(contrato.Id);
+            var cantidadSupuesta = lista.Count;
+            var fechaInicio = contrato.FechaInicio;
+            var fechaFinal = contrato.FechaFinalizacion;
+            TimeSpan t = fechaFinal - fechaInicio;
+            var cantidadCoutas = Math.Round(t.TotalDays / 30);
+            
+            var ahora = DateTime.Now;
+            if (cantidadSupuesta == cantidadCoutas && fechaFinal > ahora)
+            {
+                TimeSpan mora = fechaFinal - ahora;
+                var meses = t.TotalDays / 30;
+                var mes = (int)Math.Round(meses);
+                if (mes == 1)
+                {
+                    var importe = lista.First().Importe;
+                    TempData["Error"] = "Si borra este empleador adquirira una multa de: $" + importe;
+                }else if(mes >= 2)
+                {
+                    var importe = lista.First().Importe * 2;
+                    TempData["Error"] = "Si borra este empleador adquirira una multa de: $" + importe;
+                }
+                return View(contrato);
+            }
+            else
+            {
+                TempData["Error"] = "Tiene que pagar los meses que le faltan MOROSO";
+                return View(contrato);
+            }           
+
         }
 
         // POST: ContratoAlquiler/Delete/5
@@ -139,10 +171,21 @@ namespace PrimerProyecto.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                var lista = rp.ObtenerTodosPorContratoId(id);
+                foreach (var item in lista)
+                {
+                    rp.Baja(item.Id);
+                }
+                var contrato = rca.ObtenerPorId(id);
+                var inmId = contrato.InmuebleId;
+                var inm = rinm.ObtenerPorId(inmId);
+                inm.Estado = true;
+                rinm.Modificacion(inm);
                 rca.Baja(id);
+               
                 TempData["Mensaje"] = "Eliminación realizada correctamente";
                 return RedirectToAction(nameof(Index));
+
             }
             catch(Exception ex)
             {
@@ -161,51 +204,9 @@ namespace PrimerProyecto.Controllers
             TimeSpan t = fechaFinal - fechaInicio;
             var meses = t.TotalDays / 30;
            var mes = (int) Math.Round(meses);
-            //PENDIENTE
-           
-            
-            /*var mesFinal = Convert.ToInt32(fechaFinal.Month.ToString()); ;
-            var diaFinal = Convert.ToInt32(fechaFinal.Day.ToString()); ;
-            var añoFinal = Convert.ToInt32(fechaFinal.Year.ToString()); ;
-
-            var mesInicio = Convert.ToInt32(fechaInicio.Month.ToString());
-            var diaInicio = Convert.ToInt32(fechaInicio.Day.ToString());
-            var añoInicio = Convert.ToInt32(fechaInicio.Year.ToString());
-
-            var año = añoFinal - añoInicio;
-            var mes = mesFinal - mesInicio;
-            var dia = diaFinal - diaInicio;
-
-            if (año > 0)
-            {
-                if (mes == 0)
-                {
-                    if (dia == 0 || dia > 0)
-                    {
-                        mes = 12 * año;
-                    }
-                    else if (dia < 0)
-                    {
-                        mes = 12 * año - 1;
-                    }
-                }
-                else if (mes < 0 || mes > 0)
-                {
-                    if (dia == 0 || dia > 0)
-                    {
-                        mes += 12 * año;
-
-                    }
-                    else if (dia < 0)
-                    {
-                        mes += 12 * año - 1;
-                    }
-                }
-            }
-            */
             if(nroCuota >= mes)
             {
-                TempData["Error"] = "Hay que confiar, porque si no confias no hay confianza";
+                TempData["Error"] = "Ya termino de realizar los pagos";
                 return RedirectToAction("Index", "Pago");
             }
             else
@@ -230,6 +231,48 @@ namespace PrimerProyecto.Controllers
             if (TempData.ContainsKey("Error"))
                 ViewBag.Error = TempData["Error"];
             return View(lista);
+        }
+        public ActionResult Renovar(int id)
+        {
+            var ca = rca.ObtenerPorId(id);
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+            if (TempData.ContainsKey("Error"))
+                ViewBag.Error = TempData["Error"];
+            var fechaFinal = ca.FechaFinalizacion;
+            var fechaAhora = DateTime.Now;
+            if (fechaFinal > fechaAhora)
+            {
+                TempData["Error"] = "No puede renovar un contrato que aun no ha terminado!!";
+                return RedirectToAction(nameof(Index));
+
+            }            
+            ViewBag.Inquilino = rinq.ObtenerTodos();
+            ViewBag.Inmueble = rinm.ObtenerTodos();
+                   
+            return View(ca);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Renovar(ContratoAlquiler ca)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    int res = rca.Alta(ca);
+                    TempData["Id"] = ca.Id;
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                    return View(ca);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View(ca);
+            }
         }
     }
 }

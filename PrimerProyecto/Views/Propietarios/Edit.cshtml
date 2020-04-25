@@ -3,11 +3,86 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
+<style>
+    .inputBox .inputText {
+        transform: translateY(-30px);
+        font-size: 18px;
+        opacity: 1;
+        color: #D35400;
+    }
+</style>
 <h1>Editar</h1>
-
-<h4>Propietario</h4>
 <hr />
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="titulo">Propietario</h1>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="container">
+        <div class="formBox">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="inputBox">
+                            <div class="inputText">DNI</div>
+                            <input asp-for="Dni" class="input" />
+                            <span asp-validation-for="Dni" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="inputBox">
+                            <div class="inputText">Nombre</div>
+                            <input asp-for="Nombre" class="input" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="inputBox">
+                            <div class="inputText">Apellido</div>
+                            <input asp-for="Apellido" class="input" />
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="inputBox">
+                            <div class="inputText">Email</div>
+                            <input asp-for="Email" class="input" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="inputBox">
+                            <div class="inputText">Telefono</div>
+                            <input asp-for="Telefono" class="input" />
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="submit" value="Guardar" name="" class="button" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button asp-action="Index" class="button" style="background-color: #212121">Regresar a la lista</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">

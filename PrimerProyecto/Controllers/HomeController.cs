@@ -17,27 +17,7 @@ namespace PrimerProyecto.Controllers
             ViewBag.Saludo = "Bienvenidos a la Inmobiliaria";
             return View();
         }
-        [Authorize]
-        public ActionResult Seguro()
-        {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            return View(claims);
-        }
-
-        [Authorize(Policy = "Administrador")]
-        public ActionResult Admin()
-        {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            return View(claims);
-        }
-
-        public ActionResult Restringido()
-        {
-            return View();
-        }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

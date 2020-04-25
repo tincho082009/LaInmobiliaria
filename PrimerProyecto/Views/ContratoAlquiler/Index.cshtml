@@ -59,10 +59,11 @@
         
             <td>
                 <div class="btn-group">
-                    @Html.ActionLink("", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-info fas fa-edit", @title="Editar" })
+                    @Html.ActionLink("", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-info fas fa-edit", @title = "Editar" })
                     @Html.ActionLink("", "Pagar", new { id = item.Id }, new { @class = "btn btn-outline-warning fas fa-dollar-sign", @title = "Pagar" })
                     @Html.ActionLink("", "Buscar", new { id = item.Id }, new { @class = "btn btn-outline-secondary fas fa-list-ol", @title = "Pagos" })
-                    @if (User.IsInRole("Administrador"))
+                    @Html.ActionLink("", "Renovar", new { id = item.Id }, new { @class = "btn btn-outline-dark fas fa-history", @title = "Renovar" })
+                    @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
                     {
                         @Html.ActionLink("", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-danger fas fa-trash-alt", @title = "Borrar" })
                     }

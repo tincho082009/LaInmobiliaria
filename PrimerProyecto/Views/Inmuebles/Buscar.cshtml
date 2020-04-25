@@ -1,0 +1,53 @@
+﻿@model IEnumerable<PrimerProyecto.Models.ContratoAlquiler>
+
+@{
+    ViewData["Title"] = "Buscar";
+}
+
+<h1>Buscar</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Monto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaFinalizacion)
+            </th>
+            <th>
+                Inquilino
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @(Math.Round(item.Monto))
+            </td>
+            <td>
+                @(item.FechaInicio.Date.ToString("d"))
+            </td>
+            <td>
+                @(item.FechaFinalizacion.Date.ToString("d"))
+            </td>
+            <td>
+                @Html.ActionLink(item.Inquilino.Nombre + " " + item.Inquilino.Apellido, "Index", "Inquilinos", new { id = item.InmuebleId }, new { @class = "text-decoration-none" })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div>
+    <a asp-action="Index" class="btn btn-info">Regresar a la lista</a>
+</div>

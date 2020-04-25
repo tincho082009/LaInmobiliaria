@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PrimerProyecto.Models
 {
-    public class RepositorioInmueble : RepositorioBase, IRepositorio<Inmueble>
+    public class RepositorioInmueble : RepositorioBase, IRepositorioInmueble
     {
 		public RepositorioInmueble(IConfiguration configuration) : base(configuration)
 		{
@@ -163,6 +163,47 @@ namespace PrimerProyecto.Models
 			}
 			return i;
 		}
-		
+		public IList<Inmueble> ObtenerTodosPorPropietarioId(int propietarioId)
+		{
+			IList<Inmueble> res = new List<Inmueble>();
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				string sql = $"SELECT i.Id, Direccion, Uso, Tipo, CantAmbientes, Precio, Estado, PropietarioId," +
+					" p.Nombre, p.Apellido" +
+					" FROM Inmueble i INNER JOIN Propietario p ON i.PropietarioId = p.Id" +
+					$" WHERE i.PropietarioId = @propietarioId";
+				using (SqlCommand command = new SqlCommand(sql, connection))
+				{
+					command.Parameters.Add("@propietarioId", SqlDbType.Int).Value = propietarioId;
+					command.CommandType = CommandType.Text;
+					connection.Open();
+					var reader = command.ExecuteReader();
+					while (reader.Read())
+					{
+						Inmueble i = new Inmueble
+						{
+							Id = reader.GetInt32(0),
+							Direccion = reader.GetString(1),
+							Uso = reader.GetString(2),
+							Tipo = reader.GetString(3),
+							CantAmbientes = reader.GetInt32(4),
+							Precio = reader.GetDecimal(5),
+							Estado = reader.GetBoolean(6),
+							PropietarioId = reader.GetInt32(7),
+							Propietario = new Propietario
+							{
+								Id = reader.GetInt32(7),
+								Nombre = reader.GetString(8),
+								Apellido = reader.GetString(9),
+							}
+						};
+						res.Add(i);
+					}
+					connection.Close();
+				}
+			}
+			return res;
+		}
+
 	}
 }
