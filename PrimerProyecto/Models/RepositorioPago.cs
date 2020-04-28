@@ -83,9 +83,8 @@ namespace PrimerProyecto.Models
 			IList<Pago> res = new List<Pago>();
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"SELECT p.Id, NroPago, FechaPago, Importe, ContratoId," +
-					$" ca.Monto, ca.FechaInicio, ca.FechaFinalizacion" +
-					$" FROM Pago p INNER JOIN ContratoAlquiler ca ON p.ContratoId = ca.Id";
+
+				string sql = "SELECT pag.Id, NroPago, FechaPago, Importe, ContratoId, ca.Monto, ca.FechaInicio, ca.FechaFinalizacion, ca.InquilinoId, inq.Apellido, ca.InmuebleId, inm.PropietarioId, pro.Apellido FROM Pago pag, ContratoAlquiler ca, Inquilino inq, Inmueble inm, Propietario pro WHERE pag.ContratoId = ca.Id AND ca.InquilinoId = inq.Id AND ca.InmuebleId = inm.Id AND inm.PropietarioId = pro.Id;";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
 					command.CommandType = CommandType.Text;
@@ -105,8 +104,24 @@ namespace PrimerProyecto.Models
 								Monto = reader.GetDecimal(5),
 								FechaInicio = reader.GetDateTime(6),
 								FechaFinalizacion = reader.GetDateTime(7),
-							}
-			
+								InquilinoId = reader.GetInt32(8),
+								Inquilino = new Inquilino
+								{
+									Id = reader.GetInt32(8),
+									Apellido = reader.GetString(9)
+								},
+								InmuebleId = reader.GetInt32(10),
+								Inmueble = new Inmueble
+								{
+									Id = reader.GetInt32(10),
+									PropietarioId = reader.GetInt32(11),
+									Propietario = new Propietario
+									{
+										Id = reader.GetInt32(11),
+										Apellido = reader.GetString(12),
+									}
+								}								
+							}			
 						};
 						res.Add(p);
 					}
@@ -115,45 +130,7 @@ namespace PrimerProyecto.Models
 			}
 			return res;
 		}
-		public IList<Pago> ObtenerTodosConDatosExtras()
-		{
-			IList<Pago> res = new List<Pago>();
-			using (SqlConnection connection = new SqlConnection(connectionString))
-			{
-				string sql = $"SELECT p.Id, NroPago, FechaPago, Importe, ContratoId," +
-					$" ca.Monto, ca.FechaInicio, ca.FechaFinalizacion" +
-					$" FROM Pago p INNER JOIN ContratoAlquiler ca ON p.ContratoId = ca.Id";
-				using (SqlCommand command = new SqlCommand(sql, connection))
-				{
-					command.CommandType = CommandType.Text;
-					connection.Open();
-					var reader = command.ExecuteReader();
-					while (reader.Read())
-					{
-						Pago p = new Pago
-						{
-							Id = reader.GetInt32(0),
-							NroPago = reader.GetInt32(1),
-							FechaPago = reader.GetDateTime(2),
-							Importe = reader.GetDecimal(3),
-							ContratoId = reader.GetInt32(4),
-							ContratoAlquiler = new ContratoAlquiler
-							{
-								Id = reader.GetInt32(4),
-								Monto = reader.GetDecimal(5),
-								FechaInicio = reader.GetDateTime(6),
-								FechaFinalizacion = reader.GetDateTime(7),								
-							}
-
-						};
-						res.Add(p);
-					}
-					connection.Close();
-				}
-			}
-			return res;
-		}
-
+	
 		public Pago ObtenerPorId(int id)
 		{
 			Pago p = null;
@@ -196,10 +173,7 @@ namespace PrimerProyecto.Models
 			IList<Pago> res = new List<Pago>();
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"SELECT p.Id, NroPago, FechaPago, Importe, ContratoId," +
-					$" ca.Monto, ca.FechaInicio, ca.FechaFinalizacion" +
-					$" FROM Pago p INNER JOIN ContratoAlquiler ca ON p.ContratoId = ca.Id" +
-					$" WHERE p.ContratoId = @contratoId";
+				string sql = "SELECT pag.Id, NroPago, FechaPago, Importe, ContratoId, ca.Monto, ca.FechaInicio, ca.FechaFinalizacion, ca.InquilinoId, inq.Apellido, ca.InmuebleId, inm.PropietarioId, pro.Apellido FROM Pago pag, ContratoAlquiler ca, Inquilino inq, Inmueble inm, Propietario pro WHERE pag.ContratoId = ca.Id AND ca.InquilinoId = inq.Id AND ca.InmuebleId = inm.Id AND inm.PropietarioId = pro.Id AND pag.ContratoId = @contratoId;";					
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
 					command.Parameters.Add("@contratoId", SqlDbType.Int).Value = contratoId;
@@ -221,6 +195,23 @@ namespace PrimerProyecto.Models
 								Monto = reader.GetDecimal(5),
 								FechaInicio = reader.GetDateTime(6),
 								FechaFinalizacion = reader.GetDateTime(7),
+								InquilinoId = reader.GetInt32(8),
+								Inquilino = new Inquilino
+								{
+									Id = reader.GetInt32(8),
+									Apellido = reader.GetString(9)
+								},
+								InmuebleId = reader.GetInt32(10),
+								Inmueble = new Inmueble
+								{
+									Id = reader.GetInt32(10),
+									PropietarioId = reader.GetInt32(11),
+									Propietario = new Propietario
+									{
+										Id = reader.GetInt32(11),
+										Apellido = reader.GetString(12),
+									}
+								}
 							}
 
 						};

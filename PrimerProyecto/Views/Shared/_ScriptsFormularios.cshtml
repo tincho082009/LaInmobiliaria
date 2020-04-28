@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "_ScriptsFormularios";
+}
+
+    <script>
+        $('select').selectpicker();
+
+        $(".input").focus(function () {
+            $(this).parent().addClass("focus");
+        });
+        var x = document.getElementsByTagName("input[type ='checkbox']");
+        if (x != null) {
+            $("input[type='checkbox']").click(function () {
+                $('#textoEstado').css('color', '#D35400');
+                $('#textoEstado').css('font-size', '18px');
+                $('#textoEstado').css('transform', 'translateY(-30px)');
+                $('#textoEstado').css('opacity', '1');
+            });
+        }
+         
+
+</script>
+

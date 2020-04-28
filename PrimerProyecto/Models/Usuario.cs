@@ -29,7 +29,7 @@ namespace PrimerProyecto.Models
         public string Clave { get; set; }
         public string Avatar { get; set; }
         public IFormFile AvatarFile { get; set; }
-
+        [DisplayName("Rol")]
         public string RolNombre => Rol > 0 ? ((enRoles)Rol).ToString() : "";
 
         public static IDictionary<int, string> ObtenerRoles()

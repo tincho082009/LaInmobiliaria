@@ -124,7 +124,7 @@ namespace PrimerProyecto.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Usuario u)
         {
-            var vista = "Edit";          
+            var vista = "Edit";
             try
             {
                 var usuario = repositorioUsuario.ObtenerPorId(id);
@@ -150,8 +150,8 @@ namespace PrimerProyecto.Controllers
                 repositorioUsuario.Modificacion(u);
                 TempData["Mensaje"] = "Datos guardados correctamente";
 
-                return RedirectToAction(nameof(Index));                
-                
+                return RedirectToAction(nameof(Index));
+
             }
             catch (Exception ex)
             {
@@ -162,7 +162,7 @@ namespace PrimerProyecto.Controllers
             }
         }
 
-        [HttpPost] 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CambiarPass(int id, CambioClaveView cambio)
         {
@@ -291,8 +291,8 @@ namespace PrimerProyecto.Controllers
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var authProperties = new AuthenticationProperties
-                {                 
-                    AllowRefresh = true,                 
+                {
+                    AllowRefresh = true,
                 };
 
                 await HttpContext.SignInAsync(
@@ -329,7 +329,43 @@ namespace PrimerProyecto.Controllers
                 ViewBag.Mensaje = TempData["Mensaje"];
             if (TempData.ContainsKey("Error"))
                 ViewBag.Error = TempData["Error"];
-            return View("Edit", u);
+            return View(u);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Perfil(Usuario user)
+        {
+            try
+            {
+                var u = repositorioUsuario.ObtenerPorEmail(User.Identity.Name);
+                u.AvatarFile = user.AvatarFile;
+                if (u.AvatarFile != null && u.Id > 0)
+                {
+                    string wwwPath = environment.WebRootPath;
+                    string path = Path.Combine(wwwPath, "Uploads");
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    string fileName = "avatar_" + u.Id + Path.GetExtension(u.AvatarFile.FileName);
+                    string pathCompleto = Path.Combine(path, fileName);
+                    u.Avatar = Path.Combine("/Uploads", fileName);
+                    using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
+                    {
+                        u.AvatarFile.CopyTo(stream);
+                    }
+                    repositorioUsuario.Modificacion(u);
+                }
+                return RedirectToAction(nameof(Index));
+
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                TempData["StackTrace"] = ex.StackTrace;
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

@@ -3,14 +3,9 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<style>
-    .inputBox .inputText {
-        transform: translateY(-30px);
-        font-size: 18px;
-        opacity: 1;
-        color: #D35400;
-    }
-</style>
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstilosFormularios");}
+}
 <h1>Editar</h1>
 <hr />
 <div class="row">
@@ -25,16 +20,16 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="inputBox">
-                            <div class="inputText">DNI</div>
-                            <input asp-for="Dni" class="input" />
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">DNI</div>
+                            <input asp-for="Dni" class="inputEdit" />
                             <span asp-validation-for="Dni" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="inputBox">
-                            <div class="inputText">Nombre</div>
-                            <input asp-for="Nombre" class="input" />
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Nombre</div>
+                            <input asp-for="Nombre" class="inputEdit" />
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
                     </div>
@@ -42,17 +37,17 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="inputBox">
-                            <div class="inputText">Apellido</div>
-                            <input asp-for="Apellido" class="input" />
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Apellido</div>
+                            <input asp-for="Apellido" class="inputEdit" />
                             <span asp-validation-for="Apellido" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="col-sm-6">
-                        <div class="inputBox">
-                            <div class="inputText">Email</div>
-                            <input asp-for="Email" class="input" />
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Email</div>
+                            <input asp-for="Email" class="inputEdit" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                     </div>
@@ -60,9 +55,9 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="inputBox">
-                            <div class="inputText">Telefono</div>
-                            <input asp-for="Telefono" class="input" />
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Telefono</div>
+                            <input asp-for="Telefono" class="inputEdit" />
                             <span asp-validation-for="Telefono" class="text-danger"></span>
                         </div>
                     </div>
@@ -76,53 +71,15 @@
                 <br />
                 <div class="row">
                     <div class="col-sm-12">
-                        <button asp-action="Index" class="button" style="background-color: #212121">Regresar a la lista</button>
+                        <a asp-action="Index" class="buttonIndex btn btn-dark">Regresar a la lista</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Dni" class="control-label"></label>
-                <input asp-for="Dni" class="form-control" />
-                <span asp-validation-for="Dni" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
-                <span asp-validation-for="Apellido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index" class="btn btn-info">Regresar a la lista</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ScriptsFormularios");}
 }

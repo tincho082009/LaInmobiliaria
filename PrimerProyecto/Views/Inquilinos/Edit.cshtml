@@ -3,57 +3,91 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstilosFormularios");}
+}
 
 <h1>Editar</h1>
-
-<h4>Inquilino</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-           
-            <div class="form-group">
-                <label asp-for="Dni" class="control-label"></label>
-                <input asp-for="Dni" class="form-control" />
-                <span asp-validation-for="Dni" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
-                <span asp-validation-for="Apellido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Trabajo" class="control-label"></label>
-                <input asp-for="Trabajo" class="form-control" />
-                <span asp-validation-for="Trabajo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NombreGarante" class="control-label"></label>
-                <input asp-for="NombreGarante" class="form-control" />
-                <span asp-validation-for="NombreGarante" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DniGarante" class="control-label"></label>
-                <input asp-for="DniGarante" class="form-control" />
-                <span asp-validation-for="DniGarante" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="col-sm-12">
+        <h1 class="titulo">Inquilino</h1>
     </div>
 </div>
+<div class="container-fluid">
+    <div class="container">
+        <div class="formBox">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">DNI</div>
+                            <input asp-for="Dni" class="inputEdit" />
+                            <span asp-validation-for="Dni" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Nombre</div>
+                            <input asp-for="Nombre" class="inputEdit" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
 
-<div>
-    <a asp-action="Index" class="btn btn-info">Regresar a la lista</a>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Apellido</div>
+                            <input asp-for="Apellido" class="inputEdit" />
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Trabajo</div>
+                            <input asp-for="Trabajo" class="inputEdit" />
+                            <span asp-validation-for="Trabajo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Nombre del Garante</div>
+                            <input asp-for="NombreGarante" class="inputEdit" />
+                            <span asp-validation-for="NombreGarante" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Dni del Garante</div>
+                            <input asp-for="DniGarante" class="inputEdit" />
+                            <span asp-validation-for="DniGarante" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="submit" value="Guardar" name="" class="button" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a asp-action="Index" class="buttonIndex btn btn-dark">Regresar a la lista</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ScriptsFormularios");}
 }

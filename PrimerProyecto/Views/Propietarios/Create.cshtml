@@ -4,6 +4,10 @@
     ViewData["Title"] = "Create";
 }
 
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstilosFormularios");}
+}
+
 <h1>Crear nuevo:</h1>
 <hr />
 <div class="row">
@@ -13,7 +17,7 @@
 </div>
 <div class="container-fluid">
     <div class="container">
-        <div class="formBox">         
+        <div class="formBox">
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
@@ -69,19 +73,14 @@
                 <br />
                 <div class="row">
                     <div class="col-sm-12">
-                        <button asp-action="Index" class="button" style="background-color: #212121">Regresar a la lista</button>
+                        <a asp-action="Index" class="buttonIndex btn btn-dark" >Regresar a la lista</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    $(".input").focus(function () {
-        $(this).parent().addClass("focus");
-    })
-</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ScriptsFormularios");}
 }

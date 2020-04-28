@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Importe)
             </th>
             <th>
-                Propietario-Inquilino
+                Contrato de alquiler
             </th>
             <th>
                 Fecha Inicio Contrato
@@ -49,7 +49,7 @@
                 @(Math.Round(item.Importe))
             </td>
             <td>
-                @Html.ActionLink(item.ContratoAlquiler.Id + "", "Index", "ContratoAlquiler", new { id = item.ContratoId }, new { @class = "text-decoration-none" })
+                @Html.ActionLink(item.ContratoAlquiler.Inmueble.Propietario.Apellido + "-" + item.ContratoAlquiler.Inquilino.Apellido, "Index", "ContratoAlquiler", new { id = item.ContratoId }, new { @class = "text-decoration-none" })
             </td>
             <td>
                 @(item.ContratoAlquiler.FechaInicio.Date.ToString("d"))

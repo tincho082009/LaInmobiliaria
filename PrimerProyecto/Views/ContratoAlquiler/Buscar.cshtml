@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Importe)
             </th>
             <th>
-                Codigo Contrato
+                Contrato de alquiler
             </th>
         </tr>
     </thead>
@@ -42,7 +42,7 @@
                 @Html.DisplayFor(modelItem => item.Importe)
             </td>
             <td>
-                @Html.ActionLink(item.ContratoAlquiler.Id + "", "Index", "ContratoAlquiler", new { id = item.Id }, new { @class = "text-decoration-none" })
+                @Html.ActionLink(item.ContratoAlquiler.Inmueble.Propietario.Apellido + "-" + item.ContratoAlquiler.Inquilino.Apellido, "Index", "ContratoAlquiler", new { id = item.ContratoId }, new { @class = "text-decoration-none" })
             </td>
         </tr>
         }

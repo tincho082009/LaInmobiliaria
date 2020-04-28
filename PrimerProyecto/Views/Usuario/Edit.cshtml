@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstilosFormularios");}
+}
 
 <h1>Editar</h1>
 
@@ -42,25 +45,26 @@
                 </div>
             }
         <div class="form-group">
-            <label asp-for="Avatar" class="control-label"></label><br />
-            @if (Model.Avatar != "")
-            {
-                <img src="@Model.Avatar" />
-             
-            }
-            else
-            {
-                <p>Sin avatar</p>
-            }
-        </div>
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
+            <div class="profile-img">
+                <label asp-for="Avatar" class="control-label"></label><br />
+                @if (Model.Avatar != "")
+                {
+                    <img src="@Model.Avatar" />
+                }
+                else
+                {
+                    <p>Sin avatar</p>
+                }
             </div>
-        </form>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+        </div>
+</form>
     </div>
 </div>
 
- <h4>Cambiar contraseña</h4>
+<h4>Cambiar contraseña</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -91,4 +95,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ScriptsFormularios");}
 }
