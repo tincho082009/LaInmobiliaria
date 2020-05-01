@@ -1,0 +1,63 @@
+﻿@model IEnumerable<PrimerProyecto.Models.Foto>
+
+@{
+    ViewData["Title"] = "Fotos";
+}
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstilosFormularios");}
+}
+<h1>Fotos</h1>
+
+<div>
+    <h4>Inmueble</h4>
+    <hr />
+    @if (Model.Count() >= 1)
+    {
+        @foreach (var item in Model)
+        { 
+<dl class="row">
+    <dt class="col-sm-2"></dt>
+    <dd class="col-sm-8">
+        <div class="profile-img">
+            @if (item.Url != "")
+            {
+                <img src="@item.Url" />
+            }
+            else
+            {
+                <p>Sin imagenes</p>
+            }
+        </div>
+    </dd>
+    <dd class="col-sm-2"></dd>
+    <dt class="col-sm-4">       
+    </dt>
+    <dd class="col-sm-8">
+        ELIMINAR
+        @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
+        {
+            @Html.ActionLink("", "Delete", "Foto", new { id = item.Id }, new { @class = "btn btn-outline-danger fas fa-trash-alt", @title = "Borrar" })
+        }
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        DETALLES
+        @Html.ActionLink("", "Details", "Foto", new { id = item.Id }, new { @class = "btn btn-outline-warning fas fa-info-circle", @title = "Detalles" })
+    </dd>
+</dl>
+    <hr />
+        }
+    }
+    else
+    {
+        <h1>No hay imagenes disponibles :'c</h1>
+        <br /><br />
+    }
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <a asp-action="Index" class="buttonIndex btn btn-dark">Regresar a la lista</a>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ScriptsFormularios");}
+}

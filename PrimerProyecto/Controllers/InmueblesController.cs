@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +18,20 @@ namespace PrimerProyecto.Controllers
     public class InmueblesController : Controller
     {
         private readonly IConfiguration configuration;
+        private readonly IHostingEnvironment environment;
         private readonly IRepositorioInmueble ri;
         private readonly IRepositorioPropietario rp;
+        private readonly IRepositorioFoto rf;
         private readonly IRepositorioContratoAlquiler rca;
 
-        public InmueblesController(IConfiguration configuration, IRepositorioInmueble ri, IRepositorioPropietario rp, IRepositorioContratoAlquiler ca)
+        public InmueblesController(IConfiguration configuration, IHostingEnvironment environment, IRepositorioInmueble ri, IRepositorioPropietario rp, IRepositorioContratoAlquiler ca, IRepositorioFoto rf)
         {
             this.configuration = configuration;
+            this.environment = environment;
             this.ri = ri;
             this.rp = rp;
             this.rca = ca;
+            this.rf = rf;
         }
 
         // GET: Inmuebles
@@ -62,8 +69,36 @@ namespace PrimerProyecto.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    Foto f = new Foto();
                     int res = ri.Alta(i);
                     TempData["Id"] = i.Id;
+                    
+                    if (i.Fotos.Count != 0 && i.Id > 0)
+                    {
+                        var lista = i.Fotos;
+                        var x = 1;
+                        foreach (var item in lista)
+                        {                       
+                            string wwwPath = environment.WebRootPath;
+                            string path = Path.Combine(wwwPath, "Uploads");
+                            if (!Directory.Exists(path))
+                            {
+                                Directory.CreateDirectory(path);
+                            }
+                            string fileName = "inmueble_" + i.Id +"-"+ x + Path.GetExtension(item.FileName);
+                            string pathCompleto = Path.Combine(path, fileName);
+                            f.Url = Path.Combine("/Uploads", fileName);
+                            f.Tipo = Path.GetExtension(item.FileName);
+                            using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
+                            {
+                                item.CopyTo(stream);
+                            }
+                            f.InmuebleId = i.Id;
+                            rf.Alta(f);
+                            x++;
+                        }
+                    }
+                   
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -148,6 +183,17 @@ namespace PrimerProyecto.Controllers
                 ViewBag.Mensaje = TempData["Mensaje"];
             if (TempData.ContainsKey("Error"))
                 ViewBag.Error = TempData["Error"];
+            return View(lista);
+        }
+        public ActionResult Fotos(int id)
+        {
+            var sujeto = ri.ObtenerPorId(id);
+            var lista = rf.ObtenerTodosPorInmuebleId(id);
+            if (TempData.ContainsKey("Id"))
+                ViewBag.Id = TempData["Id"];
+            if (TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+
             return View(lista);
         }
     }

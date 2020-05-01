@@ -16,7 +16,7 @@
 <div class="container-fluid">
     <div class="container">
         <div class="formBox">
-            <form asp-action="Create">
+            <form asp-action="Create" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
                     <div class="col-sm-6">
@@ -47,7 +47,7 @@
                     <div class="col-sm-6">
                         <div class="inputBox">
                             <div class="inputText">Cantidad de ambientes</div>
-                            <input asp-for="CantAmbientes" class="input" />
+                            <input asp-for="CantAmbientes" class="input" min="1" max="40" />
                             <span asp-validation-for="CantAmbientes" class="text-danger"></span>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                     <div class="col-sm-6">
                         <div class="inputBox">
                             <div class="inputText">Precio</div>
-                            <input asp-for="Precio" class="input" />
+                            <input asp-for="Precio" class="input" min="1000" maxlength="15" />
                             <span asp-validation-for="Precio" class="text-danger"></span>
                         </div>
                     </div>
@@ -69,14 +69,14 @@
                     <div class="col-sm-2">
                         <div class="inputBox">
                             <div class="switch_box box_1">
-                                <input asp-for="Estado"  class="switch_1" />
+                                <input asp-for="Estado" class="switch_1" />
                             </div>
                             <span asp-validation-for="Estado" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <div class="inputBox">
                             <select class="selectpicker form-control " data-live-search="true" title="PROPIETARIOS" name="PropietarioId">
                                 @foreach (var item in (IList<Propietario>)ViewBag.Propietario)
@@ -87,8 +87,15 @@
                             <span asp-validation-for="PropietarioId" class="text-danger"></span>
                         </div>
                     </div>
+                    <div class="col-sm-6">
+                        <div class="inputBox">
+                            <div class="fotosContainer btn btn-lg btn-light">
+                                <input asp-for="Fotos" class="fotos" />SELECCIONAR FOTOS
+                                <span asp-validation-for="Fotos" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
                 <div class="row">
                     <div class="col-sm-12">
                         <input type="submit" value="Crear" name="" class="button" />

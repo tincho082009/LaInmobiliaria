@@ -71,7 +71,7 @@ namespace PrimerProyecto.Controllers
                         numBytesRequested: 256 / 8));
                     u.Clave = hashed;
                     u.Avatar = "";
-                    u.Rol = User.IsInRole("Administrador") ? u.Rol : (int)enRoles.Empleado;
+                    u.Rol = User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador") ? u.Rol : (int)enRoles.Empleado;
                     var nbreRnd = Guid.NewGuid();//posible nombre aleatorio
                     var res = repositorioUsuario.Alta(u);
                     TempData["Id"] = u.Id;

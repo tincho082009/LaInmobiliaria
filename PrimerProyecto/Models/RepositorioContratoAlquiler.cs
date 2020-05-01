@@ -20,8 +20,8 @@ namespace PrimerProyecto.Models
 			int res = -1;
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"INSERT INTO ContratoAlquiler (Monto, FechaInicio, FechaFinalizacion, InquilinoId, InmuebleId) " +
-					$"VALUES (@monto, @fechaInicio, @fechaFinalizacion, @inquilinoId, @inmuebleId);" +
+				string sql = $"INSERT INTO ContratoAlquiler (Monto, FechaInicio, FechaFinalizacion, InquilinoId, InmuebleId, Estado) " +
+					$"VALUES (@monto, @fechaInicio, @fechaFinalizacion, @inquilinoId, @inmuebleId, @estado);" +
 					$"SELECT SCOPE_IDENTITY();";//devuelve el id insertado
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
@@ -31,6 +31,7 @@ namespace PrimerProyecto.Models
 					command.Parameters.AddWithValue("@fechaFinalizacion", ca.FechaFinalizacion);
 					command.Parameters.AddWithValue("@inquilinoId", ca.InquilinoId);
 					command.Parameters.AddWithValue("@inmuebleId", ca.InmuebleId);
+					command.Parameters.AddWithValue("@estado", ca.Estado);
 					connection.Open();
 					res = Convert.ToInt32(command.ExecuteScalar());
 					ca.Id = res;
@@ -61,7 +62,7 @@ namespace PrimerProyecto.Models
 			int res = -1;
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"UPDATE ContratoAlquiler SET Monto=@monto, FechaInicio=@fechaInicio, FechaFinalizacion=@fechaFinalizacion, InquilinoId=@inquilinoId, InmuebleId=@inmuebleId " +
+				string sql = $"UPDATE ContratoAlquiler SET Monto=@monto, FechaInicio=@fechaInicio, FechaFinalizacion=@fechaFinalizacion, InquilinoId=@inquilinoId, InmuebleId=@inmuebleId, Estado=@estado " +
 					$"WHERE Id = @id";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
@@ -72,6 +73,7 @@ namespace PrimerProyecto.Models
 					command.Parameters.AddWithValue("@fechaFinalizacion", ca.FechaFinalizacion);
 					command.Parameters.AddWithValue("@inquilinoId", ca.InquilinoId);
 					command.Parameters.AddWithValue("@inmuebleId", ca.InmuebleId);
+					command.Parameters.AddWithValue("@estado", ca.Estado);
 					command.Parameters.AddWithValue("@id", ca.Id);
 					connection.Open();
 					res = command.ExecuteNonQuery();
@@ -86,7 +88,7 @@ namespace PrimerProyecto.Models
 			IList<ContratoAlquiler> res = new List<ContratoAlquiler>();
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"SELECT ca.Id, Monto, FechaInicio, FechaFinalizacion, InquilinoId, InmuebleId, inq.Nombre, inq.Apellido , i.Direccion " +
+				string sql = $"SELECT ca.Id, Monto, FechaInicio, FechaFinalizacion, InquilinoId, InmuebleId, ca.Estado, inq.Nombre, inq.Apellido , i.Direccion " +
 					$" FROM ContratoAlquiler ca INNER JOIN Inmueble i ON ca.InmuebleId = i.Id " +
 				    $"INNER JOIN Inquilino inq ON ca.InquilinoId = inq.Id ";
 				
@@ -105,16 +107,17 @@ namespace PrimerProyecto.Models
 							FechaFinalizacion = reader.GetDateTime(3),
 							InquilinoId = reader.GetInt32(4),
 							InmuebleId = reader.GetInt32(5),
+							Estado = reader.GetBoolean(6),
 							Inquilino = new Inquilino
 							{
 								Id = reader.GetInt32(4),
-								Nombre = reader.GetString(6),
-								Apellido = reader.GetString(7),
+								Nombre = reader.GetString(7),
+								Apellido = reader.GetString(8),
 							},
 							Inmueble = new Inmueble
 							{
 								Id = reader.GetInt32(5),
-								Direccion = reader.GetString(8),
+								Direccion = reader.GetString(9),
 							}							
 						};
 						res.Add(ca);
@@ -130,7 +133,7 @@ namespace PrimerProyecto.Models
 			ContratoAlquiler ca = null;
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"SELECT Id, Monto, FechaInicio, FechaFinalizacion, InquilinoId, InmuebleId FROM ContratoAlquiler" +
+				string sql = $"SELECT Id, Monto, FechaInicio, FechaFinalizacion, InquilinoId, InmuebleId, Estado FROM ContratoAlquiler" +
 					$" WHERE Id=@id";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
@@ -148,6 +151,7 @@ namespace PrimerProyecto.Models
 							FechaFinalizacion = reader.GetDateTime(3),
 							InquilinoId = reader.GetInt32(4),
 							InmuebleId = reader.GetInt32(5),
+							Estado = reader.GetBoolean(6),
 						};
 					}
 					connection.Close();
@@ -161,7 +165,7 @@ namespace PrimerProyecto.Models
 			IList<ContratoAlquiler> res = new List<ContratoAlquiler>();
 			using (SqlConnection connection = new SqlConnection(connectionString))
 			{
-				string sql = $"SELECT ca.Id, Monto, FechaInicio, FechaFinalizacion, InquilinoId, InmuebleId, inq.Nombre, inq.Apellido , i.Direccion " +
+				string sql = $"SELECT ca.Id, Monto, FechaInicio, FechaFinalizacion, InquilinoId, InmuebleId, ca.Estado, inq.Nombre, inq.Apellido , i.Direccion " +
 					$" FROM ContratoAlquiler ca INNER JOIN Inmueble i ON ca.InmuebleId = i.Id " +
 					$"INNER JOIN Inquilino inq ON ca.InquilinoId = inq.Id " +
 					$"WHERE InmuebleId = @inmuebleId";
@@ -181,16 +185,17 @@ namespace PrimerProyecto.Models
 							FechaFinalizacion = reader.GetDateTime(3),
 							InquilinoId = reader.GetInt32(4),
 							InmuebleId = reader.GetInt32(5),
+							Estado = reader.GetBoolean(6),
 							Inquilino = new Inquilino
 							{
 								Id = reader.GetInt32(4),
-								Nombre = reader.GetString(6),
-								Apellido = reader.GetString(7),
+								Nombre = reader.GetString(7),
+								Apellido = reader.GetString(8),
 							},
 							Inmueble = new Inmueble
 							{
 								Id = reader.GetInt32(5),
-								Direccion = reader.GetString(8),
+								Direccion = reader.GetString(9),
 							}
 						};
 						res.Add(ca);

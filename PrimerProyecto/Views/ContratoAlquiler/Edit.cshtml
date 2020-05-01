@@ -23,7 +23,7 @@
                     <div class="col-sm-6">
                         <div class="inputBoxEdit">
                             <div class="inputTextEdit">Monto</div>
-                            <input asp-for="Monto" class="inputEdit" />
+                            <input asp-for="Monto" class="inputEdit" min="1" maxlength="15" />
                             <span asp-validation-for="Monto" class="text-danger"></span>
                         </div>
                     </div>

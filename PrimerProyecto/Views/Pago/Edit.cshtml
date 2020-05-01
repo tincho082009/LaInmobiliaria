@@ -22,7 +22,7 @@
                     <div class="col-sm-6">
                         <div class="inputBoxEdit">
                             <div class="inputTextEdit">Numero de pago</div>
-                            <input asp-for="NroPago" class="inputEdit" />
+                            <input asp-for="NroPago" class="inputEdit" min="1" />
                             <span asp-validation-for="NroPago" class="text-danger"></span>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                     <div class="col-sm-6">
                         <div class="inputBoxEdit">
                             <div class="inputTextEdit">Importe</div>
-                            <input asp-for="Importe" class="inputEdit" />
+                            <input asp-for="Importe" class="inputEdit" min="1" max="10000000"/>
                             <span asp-validation-for="Importe" class="text-danger"></span>
                         </div>
                     </div>

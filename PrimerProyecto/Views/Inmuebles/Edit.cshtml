@@ -48,7 +48,7 @@
                     <div class="col-sm-6">
                         <div class="inputBoxEdit">
                             <div class="inputTextEdit">Cantidad de ambientes</div>
-                            <input asp-for="CantAmbientes" class="inputEdit" />
+                            <input asp-for="CantAmbientes" class="inputEdit" min="1" max="40" />
                             <span asp-validation-for="CantAmbientes" class="text-danger"></span>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                     <div class="col-sm-6">
                         <div class="inputBoxEdit">
                             <div class="inputTextEdit">Precio</div>
-                            <input asp-for="Precio" class="inputEdit" />
+                            <input asp-for="Precio" class="inputEdit" min="1000" maxlength="15" />
                             <span asp-validation-for="Precio" class="text-danger"></span>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <input type="submit" value="Crear" name="" class="button" />
+                        <input type="submit" value="Guardar" name="" class="button" />
                     </div>
                 </div>
                 <br />

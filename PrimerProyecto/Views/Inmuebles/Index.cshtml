@@ -5,11 +5,13 @@
 }
 
 <h1>Inmuebles</h1>
-
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstiloIndex");}
+}
 <p>
-    <a asp-action="Create" class="btn btn-primary">Crear nuevo Inmueble</a>
+    <a asp-action="Create" class="btn btn-primary btn-capsul">Crear nuevo Inmueble</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -40,45 +42,47 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr class='@(ViewBag.IdSeleccionado == item.Id? "table-primary": "")'>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Uso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tipo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CantAmbientes)
-            </td>
-            <td>
-                @(Math.Round(item.Precio))
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.ActionLink(item.Propietario.Nombre + " " + item.Propietario.Apellido, "Index", "Propietarios", new { id = item.PropietarioId }, new { @class = "text-decoration-none" })
+        @foreach (var item in Model)
+        {
+            <tr class='@(ViewBag.IdSeleccionado == item.Id? "table-primary": "")'>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Direccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uso)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CantAmbientes)
+                </td>
+                <td>
+                    @(Math.Round(item.Precio))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    @Html.ActionLink(item.Propietario.Nombre + " " + item.Propietario.Apellido, "Index", "Propietarios", new { id = item.PropietarioId }, new { @class = "text-decoration-none" })
 
-            </td>
-            <td>
-                <div class="btn-group">
-                    @Html.ActionLink("", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-info fas fa-edit", @title = "Editar" })
-                    @Html.ActionLink("", "Details", new { id = item.Id }, new { @class = "btn btn-outline-warning fas fa-info-circle", @title = "Detalles" })
-                    @Html.ActionLink("", "Buscar", new { id = item.Id }, new { @class = "btn btn-outline-secondary fas fa-list-ol", @title = "Contratos" })
-                    @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
-                    {
-                        @Html.ActionLink("", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-danger fas fa-trash-alt", @title = "Borrar" })
-                    }
-                </div>
-            </td>
-        </tr>
-}
+                </td>
+                <td>
+                    <div class="btn-group">
+                        @Html.ActionLink("", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-info fas fa-edit", @title = "Editar" })
+                        @Html.ActionLink("", "Details", new { id = item.Id }, new { @class = "btn btn-outline-warning fas fa-info-circle", @title = "Detalles" })
+                        @Html.ActionLink("", "Buscar", new { id = item.Id }, new { @class = "btn btn-outline-secondary fas fa-list-ol", @title = "Contratos" })
+                        @Html.ActionLink("", "Fotos", new { id = item.Id }, new { @class = "btn btn-outline-dark fas fa-camera", @title = "Fotos" })
+                        @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
+                        {
+                            @Html.ActionLink("", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-danger fas fa-trash-alt", @title = "Borrar" })
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -5,11 +5,13 @@
 }
 
 <h1>Usuarios</h1>
-
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstiloIndex");}
+}
 <p>
-    <a asp-action="Create" class="btn btn-primary">Crear nuevo Usuario</a>
+    <a asp-action="Create" class="btn btn-primary btn-capsul">Crear nuevo Usuario</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -31,31 +33,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Apellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RolNombre)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RolNombre)
+                </td>
 
-            <td>
-                <div class="btn-group">
-                    @Html.ActionLink("", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-info fas fa-edit", @title = "Editar" })               
-                    @Html.ActionLink("", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-danger fas fa-trash-alt", @title = "Borrar" })                  
-                </div>
-            </td>
-        </tr>
-}
+                <td>
+                    <div class="btn-group">
+                        @Html.ActionLink("", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-info fas fa-edit", @title = "Editar" })
+                        @Html.ActionLink("", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-danger fas fa-trash-alt", @title = "Borrar" })
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

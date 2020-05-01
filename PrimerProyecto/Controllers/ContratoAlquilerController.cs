@@ -56,6 +56,7 @@ namespace PrimerProyecto.Controllers
         // GET: ContratoAlquiler/Create
         public ActionResult Create()
         {
+
             ViewBag.Inmueble = rinm.ObtenerTodos();
             ViewBag.Inquilino = rinq.ObtenerTodos();
             return View();
@@ -66,17 +67,50 @@ namespace PrimerProyecto.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ContratoAlquiler ca)
         {
+            var res = 0;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var inmId  = ca.InmuebleId;
-                    var inm = rinm.ObtenerPorId(inmId);
-                    inm.Estado = false; 
-                    rinm.Modificacion(inm);
-                    int res = rca.Alta(ca);
+                   
+                    /*var id = Convert.ToInt32(User.Claims.ToList()[3].Value);
+                    var contrato = rca.ObtenerPorId(id);
+                    var fechaFinalContrato = contrato.FechaFinalizacion;
+                    var fechaIniContrato = contrato.FechaInicio;
+                    var fechFinal = ca.FechaFinalizacion;
+                    var fechIni = ca.FechaInicio;
+                    var inqId = ca.InquilinoId;
+                    var inmId = ca.InmuebleId;
+                    var listaContratoxInm = rca.ObtenerPorInmuebleId(inmId);
+
+                    foreach (var item in listaContratoxInm)
+                    {                       
+                        if (item.Estado)
+                        {
+                            var fechaFinalContrato = item.FechaFinalizacion;
+                            var fechaIniContrato = item.FechaInicio;
+                            if (fechIni <= fechaFinalContrato)
+                            {
+                                ViewData["Error"] = "No se puede ahr brusco porque este campo ia esta ocupao";
+                                return View(ca);
+                            }
+                            else
+                            {
+
+                                ca.Estado = true;
+                                res = rca.Alta(ca);
+                                TempData["Id"] = ca.Id;
+                                return RedirectToAction(nameof(Index));
+                            }                           
+                        }                   
+                    }
+                    */
+                    ca.Estado = true;
+                    res = rca.Alta(ca);
                     TempData["Id"] = ca.Id;
                     return RedirectToAction(nameof(Index));
+                    //Aca iria lo que esta pegado arriba por si llega a fallar
+
                 }
                 else
                     return View(ca);
@@ -126,10 +160,6 @@ namespace PrimerProyecto.Controllers
         [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
         {
-            if (TempData.ContainsKey("Mensaje"))
-                ViewBag.Mensaje = TempData["Mensaje"];
-            if (TempData.ContainsKey("Error"))
-                ViewBag.Error = TempData["Error"];
             var contrato = rca.ObtenerPorId(id);        
             var lista = rp.ObtenerTodosPorContratoId(contrato.Id);
             var cantidadSupuesta = lista.Count;
@@ -147,17 +177,17 @@ namespace PrimerProyecto.Controllers
                 if (mes == 1)
                 {
                     var importe = lista.First().Importe;
-                    TempData["Error"] = "Si borra este empleador adquirira una multa de: $" + importe;
+                    ViewData["Error"] = "Si borra este contrato adquirira una multa de: $" + importe;
                 }else if(mes >= 2)
                 {
                     var importe = lista.First().Importe * 2;
-                    TempData["Error"] = "Si borra este empleador adquirira una multa de: $" + importe;
+                    ViewData["Error"] = "Si borra este contrato adquirira una multa de: $" + importe;
                 }
                 return View(contrato);
             }
             else
             {
-                TempData["Error"] = "Tiene que pagar los meses que le faltan MOROSO";
+                ViewData["Error"] = "Tiene que pagar los meses que le faltan MOROSO";
                 return View(contrato);
             }           
 
@@ -176,11 +206,6 @@ namespace PrimerProyecto.Controllers
                 {
                     rp.Baja(item.Id);
                 }
-                var contrato = rca.ObtenerPorId(id);
-                var inmId = contrato.InmuebleId;
-                var inm = rinm.ObtenerPorId(inmId);
-                inm.Estado = true;
-                rinm.Modificacion(inm);
                 rca.Baja(id);
                
                 TempData["Mensaje"] = "Eliminación realizada correctamente";
@@ -274,5 +299,42 @@ namespace PrimerProyecto.Controllers
                 return View(ca);
             }
         }
+        [Authorize(Policy = "Administrador")]
+        public ActionResult Rescindir(int id)
+        {
+            var contrato = rca.ObtenerPorId(id);
+             
+            return View(contrato);
+        }
+
+        // POST: ContratoAlquiler/Delete/5
+        [HttpPost]
+        [Authorize(Policy = "Administrador")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Rescindir(int id, ContratoAlquiler ca)
+        {
+            try
+            {
+                //No se si hacer esto jaja pero bueno ahi esta
+                var lista = rp.ObtenerTodosPorContratoId(id);             
+                foreach (var item in lista)
+                {
+                    rp.Baja(item.Id);
+                }
+                var contrato = rca.ObtenerPorId(id);
+                contrato.Estado = false;
+                rca.Modificacion(contrato);
+                TempData["Mensaje"] = "Rescision realizada correctamente";
+                return RedirectToAction(nameof(Index));
+
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View(ca);
+            }
+        }
+
     }
 }

@@ -55,6 +55,8 @@ namespace PrimerProyecto
             services.AddTransient<IRepositorioInmueble, RepositorioInmueble>();
             services.AddTransient<IRepositorio<Pago>, RepositorioPago>();
             services.AddTransient<IRepositorioPago, RepositorioPago>();
+            services.AddTransient<IRepositorio<Foto>, RepositorioFoto>();
+            services.AddTransient<IRepositorioFoto, RepositorioFoto>();
             services.AddTransient<IRepositorio<ContratoAlquiler>, RepositorioContratoAlquiler>();
             services.AddTransient<IRepositorioContratoAlquiler, RepositorioContratoAlquiler>();
             services.AddTransient<IRepositorio<Usuario>, RepositorioUsuario>();

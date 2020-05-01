@@ -23,7 +23,7 @@
                     <div class="col-sm-6">
                         <div class="inputBoxEdit">
                             <div class="inputTextEdit">Monto</div>
-                            <input asp-for="Monto" class="inputEdit" />
+                            <input asp-for="Monto" class="inputEdit" min="1" maxlength="15" />
                             <span asp-validation-for="Monto" class="text-danger"></span>
                         </div>
                     </div>
@@ -48,10 +48,7 @@
                             <select class="selectpicker form-control " data-live-search="true" title="INMUEBLES" name="InmuebleId">
                                 @foreach (var item in (IList<Inmueble>)ViewBag.Inmueble)
                                 {
-                                    @if (item.Estado)
-                                    {
-                                        <option value="@item.Id">@(item.Direccion)</option>
-                                    }
+                                     <option value="@item.Id">@(item.Direccion)</option>
                                 }
                             </select>
                             <span asp-validation-for="InmuebleId" class="text-danger"></span>
