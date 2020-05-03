@@ -72,43 +72,52 @@ namespace PrimerProyecto.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                   
-                    /*var id = Convert.ToInt32(User.Claims.ToList()[3].Value);
-                    var contrato = rca.ObtenerPorId(id);
-                    var fechaFinalContrato = contrato.FechaFinalizacion;
-                    var fechaIniContrato = contrato.FechaInicio;
+                    var contratos = rca.ObtenerPorInmuebleId(ca.InmuebleId);            
                     var fechFinal = ca.FechaFinalizacion;
                     var fechIni = ca.FechaInicio;
-                    var inqId = ca.InquilinoId;
-                    var inmId = ca.InmuebleId;
-                    var listaContratoxInm = rca.ObtenerPorInmuebleId(inmId);
-
-                    foreach (var item in listaContratoxInm)
-                    {                       
+                    var count = contratos.Count;
+                    //var hoy = DateTime.Now;
+                    IList<ContratoAlquiler> ctosNuevos = new List<ContratoAlquiler>();
+                    foreach (var item in contratos)
+                    {
                         if (item.Estado)
                         {
-                            var fechaFinalContrato = item.FechaFinalizacion;
-                            var fechaIniContrato = item.FechaInicio;
-                            if (fechIni <= fechaFinalContrato)
+                            if (fechIni < item.FechaInicio && fechFinal < item.FechaInicio)
                             {
-                                ViewData["Error"] = "No se puede ahr brusco porque este campo ia esta ocupao";
-                                return View(ca);
+                                ctosNuevos.Add(item);
+                            }
+                            else if (fechIni < item.FechaInicio && fechFinal > item.FechaInicio)
+                            {
+                                ViewBag.Error = "La fecha de finalizacion solicitada para ese inmueble deberia ser menor a " + item.FechaInicio;
+                            }else if (fechIni > item.FechaFinalizacion && fechFinal > item.FechaFinalizacion)
+                            {
+                                ctosNuevos.Add(item);
+                            }
+                            else if (fechIni > item.FechaFinalizacion && fechFinal < item.FechaFinalizacion)
+                            {
+                                ViewBag.Error = "La fecha de finalizacion solicitada para ese inmueble deberia ser mayor a " + item.FechaFinalizacion;
                             }
                             else
                             {
-
-                                ca.Estado = true;
-                                res = rca.Alta(ca);
-                                TempData["Id"] = ca.Id;
-                                return RedirectToAction(nameof(Index));
-                            }                           
-                        }                   
+                                ViewBag.Error = "La fecha de inicio solicitada para ese inmueble no deberia estar entre " + item.FechaInicio +"  -  "+item.FechaFinalizacion;
+                            }
+                            
+                        }
+                        
                     }
-                    */
-                    ca.Estado = true;
-                    res = rca.Alta(ca);
-                    TempData["Id"] = ca.Id;
-                    return RedirectToAction(nameof(Index));
+                    if (count == ctosNuevos.Count)
+                    {
+                        ca.Estado = true;
+                        res = rca.Alta(ca);
+                        TempData["Id"] = ca.Id;
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewBag.Inmueble = rinm.ObtenerTodos();
+                        ViewBag.Inquilino = rinq.ObtenerTodos();
+                        return View(ca);
+                    }
                     //Aca iria lo que esta pegado arriba por si llega a fallar
 
                 }

@@ -21,7 +21,7 @@ namespace PrimerProyecto.Models
         public string Apellido { get; set; } 
         [EmailAddress]
         public string Email { get; set; }
-        [MinLength(6), MaxLength(20)]
+        [StringLength(20, MinimumLength = 6, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string Telefono { get; set; }
     }
     //IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)

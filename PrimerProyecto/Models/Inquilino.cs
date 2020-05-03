@@ -12,17 +12,17 @@ namespace PrimerProyecto.Models
         [Key]
         [DisplayName("Codigo")]
         public int Id { get; set; }
-        [MinLength(8), MaxLength(8)]
+        [StringLength(8, MinimumLength = 7, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string Dni { get; set; }
-        [MinLength(3), MaxLength(20)]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string Nombre { get; set; }
-        [MinLength(2), MaxLength(20)]
+        [StringLength(20, MinimumLength = 2, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string Apellido { get; set; }
-        [MinLength(5), MaxLength(20)]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string Trabajo { get; set; }
-        [DisplayName("Nombre del garante"), MinLength(3), MaxLength(20)]
+        [DisplayName("Nombre del garante"), StringLength(20, MinimumLength = 3, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string NombreGarante { get; set; }
-        [DisplayName("Dni del garante"), MinLength(8), MaxLength(8)]
+        [DisplayName("Dni del garante"), StringLength(8, MinimumLength = 7, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string DniGarante { get; set; }
     }
 }

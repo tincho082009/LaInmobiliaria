@@ -20,7 +20,9 @@ namespace PrimerProyecto.Models
         [Key]
         [DisplayName("Codigo")]
         public int Id { get; set; }
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string Nombre { get; set; }
+        [StringLength(20, MinimumLength = 2, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string Apellido { get; set; }
         [Required, EmailAddress]
         public string Email { get; set; }

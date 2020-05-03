@@ -3,58 +3,127 @@
 @{
     ViewData["Title"] = "Details";
 }
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstilosFormularios");}
+    <style>
+        #what-we-do .card .block-1:before {
+            content: "\f0e7";
+        }
 
+        #what-we-do .card .block-2:before {
+            content: "\f2c2";
+        }
+
+        #what-we-do .card .block-3:before {
+            content: "\f5b7";
+        }
+
+        #what-we-do .card .block-4:before {
+            content: "\f5b7";
+        }
+
+        #what-we-do .card .block-5:before {
+            content: "\f0b1";
+        }
+
+        #what-we-do .card .block-6:before {
+            content: "\f5b7";
+        }
+
+        #what-we-do .card .block-7:before {
+            content: "\f2c2";
+        }
+    </style>
+}
 <h1>Detalles</h1>
+<hr />
 
-<div>
-    <h4>Inquilino</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dni)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Dni)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Apellido)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Apellido)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Trabajo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Trabajo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NombreGarante)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NombreGarante)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DniGarante)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DniGarante)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="titulo">Inquilino</h1>
+    </div>
 </div>
-<div>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new {@class="btn btn-primary" }) |
-    <a asp-action="Index" class="btn btn-info">Regresar a la lista</a>
+<section id="what-we-do">
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-1">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Id)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Id)</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-2">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Dni)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Dni)</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-3">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Nombre)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Nombre)</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-4">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Apellido)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Apellido)</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-5">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Trabajo)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Trabajo)</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-6">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.NombreGarante)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.NombreGarante)</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-7">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.DniGarante)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.DniGarante)</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="row">
+    <div class="col-sm-12">
+        @Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new { @class = "button btn" })
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-12">
+        <a asp-action="Index" class="buttonIndex btn btn-dark">Regresar a la lista</a>
+    </div>
 </div>

@@ -12,85 +12,138 @@
 <h4>Usuario</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" name="Id" value="@Model.Id" />
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
-                <span asp-validation-for="Apellido" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
-            {
-                <div class="form-group">
-                    <label class="control-label">Rol</label>
-                    <select class="form-control" name="Rol">
-                        @foreach (var kvp in (IDictionary<int, string>)ViewBag.Roles)
-                        {
-                            @:<option @(kvp.Key == Model.Rol ? "selected" : "") value="@kvp.Key">@kvp.Value</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Rol" class="text-danger"></span>
+    <div class="col-sm-12">
+        <h1 class="titulo">Usuario</h1>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="container">
+        <div class="formBox">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Nombre</div>
+                            <input asp-for="Nombre" class="inputEdit" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Apellido</div>
+                            <input asp-for="Apellido" class="inputEdit" />
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
-            }
-        <div class="form-group">
-            <div class="profile-img">
-                <label asp-for="Avatar" class="control-label"></label><br />
-                @if (Model.Avatar != "")
-                {
-                    <img src="@Model.Avatar" />
-                }
-                else
-                {
-                    <p>Sin avatar</p>
-                }
-            </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Email</div>
+                            <input asp-for="Email" class="inputEdit" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>                 
+                </div>
+                <div class="row">
+                    @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
+                    {
+                        <div class="col-sm-6">
+                            <div class="inputBoxEdit">
+                                <div class="inputTextEdit">Rol</div>
+                                <br />
+                                <select class="selectpicker form-control" data-live-search="true" title="ROL" name="Rol">
+                                    @foreach (var kvp in (IDictionary<int, string>)ViewBag.Roles)
+                                    {
+                                        @:<option @(kvp.Key == Model.Rol ? "selected" : "") value="@kvp.Key">@kvp.Value</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-sm-6">
+                        <div class="inputBoxEdit">
+                            <div class="profile-img">
+                                <div class="inputTextEdit">Avatar</div><br />
+                                @if (Model.Avatar != "")
+                                {
+                                    <img src="@Model.Avatar" />
+                                }
+                                else
+                                {
+                                    <p>Sin avatar</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="submit" value="Guardar" name="" class="button" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a asp-action="Index" class="buttonIndex btn btn-dark">Regresar a la lista</a>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <input type="submit" value="Guardar" class="btn btn-primary" />
-        </div>
-</form>
     </div>
 </div>
 
-<h4>Cambiar contraseña</h4>
-<hr />
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="CambiarPass" asp-route-id="@Model.Id" name="CambiarPass">
-            <input type="hidden" name="Id" value="@Model.Id" />
-            <div class="form-group">
-                <label class="control-label">Clave Antigüa</label>
-                <input type="password" name="ClaveVieja" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label class="control-label">Nueva Clave</label>
-                <input type="password" name="ClaveNueva" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label class="control-label">Repetir Clave Nueva</label>
-                <input type="password" name="ClaveRepeticion" class="form-control" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Cambiar" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="col-sm-12">
+        <h1 class="titulo">Cambiar Contraseña</h1>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index" class="btn btn-info">Regresar a la lista</a>
+<div class="container-fluid">
+    <div class="container">
+        <div class="formBox">
+            <form asp-action="CambiarPass" asp-route-id="@Model.Id" name="CambiarPass">
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="inputBox">
+                            <div class="inputText">Clave Antingüa</div>
+                            <input type="password" name="ClaveVieja" class="input" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="inputBox">
+                            <div class="inputText">Clave Nueva</div>
+                            <input type="password" name="ClaveNueva" class="input" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="inputBox">
+                            <div class="inputText">Repetir Clave Nueva</div>
+                            <input type="password" name="ClaveRepeticion" class="input" />
+                        </div>
+                    </div>                   
+                </div>             
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input type="submit" value="Cambiar" name="" class="button" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a asp-action="Index" class="buttonIndex btn btn-dark">Regresar a la lista</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

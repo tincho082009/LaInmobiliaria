@@ -15,10 +15,10 @@ namespace PrimerProyecto.Models
         public int Id { get; set; }
         public int PropietarioId { get; set; }
         public Propietario Propietario { get; set; }
-        [MinLength(10), MaxLength(50)]
+        [StringLength(50, MinimumLength = 10, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string Direccion { get; set; }
         public string Uso { get; set; }
-        [MinLength(3), MaxLength(30)]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "La longitud del {0} deberia ser entre {2} y {1}.")]
         public string Tipo { get; set; }
         [DisplayName("Cantidad de ambientes")]
         public int CantAmbientes { get; set; }
