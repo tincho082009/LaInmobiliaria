@@ -44,30 +44,19 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="inputBox">
-                            <select class="selectpicker form-control" data-live-search="true" title="INQUILINOS" name="InquilinoId" disabled>
-                                <option hidden></option>
-                                @foreach (var item in (IList<Inquilino>)ViewBag.Inquilino)
-                                {
-                                    @:<option @(item.Id == Model.InquilinoId ? "selected" : "") value="@item.Id">@(item.Nombre + " " + item.Apellido)</option>
-                                }
-                            </select>
-                            <span asp-validation-for="InquilinoId" class="text-danger"></span>
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Inquilino</div>
+                            <input  type="text" value="@(ViewBag.Inquilino.Nombre + '-' + ViewBag.Inquilino.Apellido)" class="inputEdit" readonly/>
+  
                         </div>
                     </div>
+                  
                 </div>
-
                 <div class="row">
-                    <div class="col-sm-6">
-                        <div class="inputBox">
-                            <select class="selectpicker form-control" data-live-search="true" title="INMUEBLES" name="InmuebleId" disabled>
-                                <option hidden></option>
-                                @foreach (var item in (IList<Inmueble>)ViewBag.Inmueble)
-                                {
-                                    @:<option @(item.Id == Model.InmuebleId ? "selected" : "") value="@item.Id">@(item.Direccion)</option>
-                                }
-                            </select>
-                            <span asp-validation-for="InmuebleId" class="text-danger"></span>
+                    <div class="col-sm-12">
+                        <div class="inputBoxEdit">
+                            <div class="inputTextEdit">Inmueble</div>
+                            <input type="text" value="@(ViewBag.Inmueble.Direccion)"class="inputEdit" readonly />
                         </div>
                     </div>
                 </div>
@@ -82,7 +71,7 @@
                         <a asp-action="Index" class="buttonIndex btn btn-dark">Regresar a la lista</a>
                     </div>
                 </div>
-            </form>
+</form>
         </div>
     </div>
 </div>
