@@ -1,17 +1,13 @@
-﻿@model IEnumerable<PrimerProyecto.Models.Inmueble>
-
+﻿
+@model IEnumerable<PrimerProyecto.Models.Inmueble>
 @{
-    ViewData["Title"] = "Inmuebles";
+    ViewData["Title"] = "MostrarDisponibles";
 }
-
-<h1>Inmuebles</h1>
 @section Styles {
     @{await Html.RenderPartialAsync("_EstiloIndex");}
 }
-<p>
-    <a asp-action="Create" class="btn btn-primary btn-capsul">Crear nuevo Inmueble</a> |
-    <a asp-action="InmueblesDisponibles" class="btn btn-secondary btn-capsul">Buscar Inmuebles Disponibles</a>
-</p>
+
+    <h1>Inmuebles disponibles</h1>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -39,7 +35,6 @@
             <th>
                 Propietario
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -70,20 +65,12 @@
                 <td>
                     @Html.ActionLink(item.Propietario.Nombre + " " + item.Propietario.Apellido, "Index", "Propietarios", new { id = item.PropietarioId }, new { @class = "text-decoration-none" })
 
-                </td>
-                <td>
-                    <div class="btn-group">
-                        @Html.ActionLink("", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-info fas fa-edit", @title = "Editar" })
-                        @Html.ActionLink("", "Details", new { id = item.Id }, new { @class = "btn btn-outline-warning fas fa-info-circle", @title = "Detalles" })
-                        @Html.ActionLink("", "Buscar", new { id = item.Id }, new { @class = "btn btn-outline-secondary fas fa-list-ol", @title = "Contratos" })
-                        @Html.ActionLink("", "Fotos", new { id = item.Id }, new { @class = "btn btn-outline-dark fas fa-camera", @title = "Fotos" })
-                        @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
-                        {
-                            @Html.ActionLink("", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-danger fas fa-trash-alt", @title = "Borrar" })
-                        }
-                    </div>
-                </td>
+                </td>               
             </tr>
         }
     </tbody>
 </table>
+<a asp-action="Index" class="buttonIndex btn btn-dark">Regresar a la lista</a>
+
+
+

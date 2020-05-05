@@ -1,18 +1,13 @@
 ﻿@model IEnumerable<PrimerProyecto.Models.ContratoAlquiler>
 
 @{
-    ViewData["Title"] = "Alquileres";
+    ViewData["Title"] = "MostrarVigentes";
 }
-
-<h1>Alquileres</h1>
 @section Styles {
     @{await Html.RenderPartialAsync("_EstiloIndex");}
 }
-<p>
-    <a asp-action="Create" class="btn btn-primary btn-capsul">Crear nuevo contrato</a> |
-    <a asp-action="BuscarDisponibles" class="btn btn-secondary btn-capsul">Buscar inmuebles desocupados</a> |
-    <a asp-action="BuscarVigentes" class="btn btn-dark btn-capsul">Buscar contratos vigentes</a>
-</p>
+
+    <h1>Contratos vigentes</h1>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -38,13 +33,12 @@
                 @Html.DisplayNameFor(model => model.Estado)
             </th>
             <th></th>
-
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class='@(ViewBag.IdSeleccionado == item.Id? "table-primary": "")'>
+            <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>

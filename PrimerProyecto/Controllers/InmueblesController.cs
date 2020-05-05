@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -194,6 +195,20 @@ namespace PrimerProyecto.Controllers
             if (TempData.ContainsKey("Mensaje"))
                 ViewBag.Mensaje = TempData["Mensaje"];
 
+            return View(lista);
+        }
+
+        public ActionResult InmueblesDisponibles()
+        {
+            var todos = ri.ObtenerTodos();
+            IList<Inmueble> lista = new List<Inmueble>();
+            foreach (var item in todos)
+            {
+                if (item.Estado)
+                {
+                    lista.Add(item);
+                }
+            }
             return View(lista);
         }
     }

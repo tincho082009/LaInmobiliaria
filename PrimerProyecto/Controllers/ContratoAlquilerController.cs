@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,11 +19,11 @@ namespace PrimerProyecto.Controllers
     {
         private readonly IConfiguration configuration;
         private readonly IRepositorioContratoAlquiler rca;
-        private readonly IRepositorio<Inmueble> rinm;
+        private readonly IRepositorioInmueble rinm;
         private readonly IRepositorio<Inquilino> rinq;
         private readonly IRepositorioPago rp;
 
-        public ContratoAlquilerController(IRepositorioContratoAlquiler rca, IRepositorio<Inmueble> rinm, IRepositorio<Inquilino> rinq, IRepositorioPago rp, IConfiguration configuration)
+        public ContratoAlquilerController(IRepositorioContratoAlquiler rca, IRepositorioInmueble rinm, IRepositorio<Inquilino> rinq, IRepositorioPago rp, IConfiguration configuration)
         {
             this.rca = rca;
             this.rinm = rinm;
@@ -372,6 +373,43 @@ namespace PrimerProyecto.Controllers
                 ViewBag.StackTrate = ex.StackTrace;
                 return View(ca);
             }
+        }
+
+        public ActionResult BuscarDisponibles()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MostrarDisponibles(ContratoAlquiler ca)
+        {
+            var fechaInicio = ca.FechaInicio;
+            var fechaFinal = ca.FechaFinalizacion;
+            var lista = rinm.ObtenerTodosDisponibles(fechaInicio, fechaFinal);
+            return View(lista);
+        }
+
+        public ActionResult BuscarVigentes()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MostrarVigentes(ContratoAlquiler ca)
+        {
+            var fechaInicio = ca.FechaInicio;
+            var fechaFinal = ca.FechaFinalizacion;
+            var lista = rca.ObtenerTodosDisponibles(fechaInicio, fechaFinal);
+            IList<ContratoAlquiler> lista2punto0 = new List<ContratoAlquiler>();
+            foreach (var item in lista)
+            {
+                if (item.Estado) {
+                    lista2punto0.Add(item);
+                }
+            }
+            return View(lista);
         }
 
     }
