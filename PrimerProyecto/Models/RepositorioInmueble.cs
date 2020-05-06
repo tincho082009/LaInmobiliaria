@@ -211,7 +211,16 @@ namespace PrimerProyecto.Models
 			{
 				string sql = $"SELECT i.Id, Direccion, Uso, Tipo, CantAmbientes, Precio, i.Estado, PropietarioId, p.Nombre, p.Apellido" +
 					$" FROM Inmueble i INNER JOIN Propietario p ON i.PropietarioId = p.Id " +
-					$"WHERE i.Id NOT IN (SELECT InmuebleId FROM ContratoAlquiler ca INNER JOIN Inmueble inm ON InmuebleId = inm.Id WHERE (FechaInicio NOT BETWEEN CAST(@fechaInicio AS datetime)AND CAST(@fechaFinal AS datetime))AND (FechaFinalizacion NOT BETWEEN CAST(@fechaInicio AS datetime)AND CAST(@fechaFinal AS datetime)));";
+					$"WHERE i.Id IN ( SELECT InmuebleId " + 
+						$"FROM ContratoAlquiler ca "+
+ 						$"WHERE Estado = 1"+					
+						$"AND((FechaInicio < @fechaInicio)AND(FechaFinalizacion < @fechaInicio))" +
+						$"OR((FechaInicio > @fechaFinal)AND(FechaFinalizacion > @fechaFinal))" +
+						$"AND((FechaInicio < @fechaInicio)AND(FechaFinalizacion > @fechaFinal))" +
+						$"OR ((FechaInicio > @fechaInicio)AND(FechaFinalizacion < @fechaFinal))" +
+						$"AND(FechaInicio NOT BETWEEN @fechaInicio AND @fechaFinal)" +
+						$"AND(FechaFinalizacion NOT BETWEEN @fechaInicio AND @fechaFinal))" +
+					$"OR i.Id NOT IN(SELECT InmuebleId FROM ContratoAlquiler);";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
 					command.Parameters.Add("@fechaInicio", SqlDbType.DateTime).Value = fechaInicio;

@@ -3,66 +3,141 @@
 @{
     ViewData["Title"] = "Delete";
 }
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstilosFormularios");}
+    <style>
+        #what-we-do .card .block-1:before {
+            content: "\f0e7";
+        }
 
+        #what-we-do .card .block-2:before {
+            content: "\f5eb";
+        }
+
+        #what-we-do .card .block-3:before {
+            content: "\f494";
+        }
+
+        #what-we-do .card .block-4:before {
+            content: "\f1ad";
+        }
+
+        #what-we-do .card .block-5:before {
+            content: "\f163";
+        }
+
+        #what-we-do .card .block-6:before {
+            content: "\f155";
+        }
+
+        #what-we-do .card .block-7:before {
+            content: "\f058";
+        }
+
+        #what-we-do .card .block-8:before {
+            content: "\f0e7";
+        }
+    </style>
+}
 <h1>Borrar</h1>
+<hr />
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="titulo">Inmueble</h1>
+    </div>
+</div>
+<section id="what-we-do">
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-1">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Id)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Id)</p>
 
-<h3>¿Estas seguro de que quieres borrar esto?</h3>
-<div>
-    <h4>Inmueble</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Direccion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Direccion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Uso)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Uso)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tipo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tipo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CantAmbientes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CantAmbientes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PropietarioId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PropietarioId)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="submit" value="Borrar" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-info">Regresar a la lista</a>
-    </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-2">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Direccion)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Direccion)</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-3">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Uso)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Uso)</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-4">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Tipo)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Tipo)</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-5">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.CantAmbientes)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.CantAmbientes)</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-6">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Precio)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Precio)</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-7">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Estado)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Estado)</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-8">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.PropietarioId)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.PropietarioId)</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="row">
+    <div class="col-sm-12">
+        <form asp-action="Delete">
+            <input type="submit" value="Borrar" class="button" />
+        </form>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-12">
+        <a asp-action="Index" class="buttonIndex btn">Regresar a la lista</a>
+    </div>
 </div>

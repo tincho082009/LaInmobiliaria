@@ -3,10 +3,12 @@
 @{
     ViewData["Title"] = "Buscar";
 }
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstiloIndex");}
+}
+<h1>Contratos de alquiler</h1>
 
-<h1>Buscar</h1>
-
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -27,27 +29,28 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @(Math.Round(item.Monto))
-            </td>
-            <td>
-                @(item.FechaInicio.Date.ToString("d"))
-            </td>
-            <td>
-                @(item.FechaFinalizacion.Date.ToString("d"))
-            </td>
-            <td>
-                @Html.ActionLink(item.Inquilino.Nombre + " " + item.Inquilino.Apellido, "Index", "Inquilinos", new { id = item.InmuebleId }, new { @class = "text-decoration-none" })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @(Math.Round(item.Monto))
+                </td>
+                <td>
+                    @(item.FechaInicio.Date.ToString("d"))
+                </td>
+                <td>
+                    @(item.FechaFinalizacion.Date.ToString("d"))
+                </td>
+                <td>
+                    @Html.ActionLink(item.Inquilino.Nombre + " " + item.Inquilino.Apellido, "Index", "Inquilinos", new { id = item.InmuebleId }, new { @class = "text-decoration-none" })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <div>
-    <a asp-action="Index" class="btn btn-info">Regresar a la lista</a>
+    <a asp-action="Index" class="btn botonIndex btn-capsul">Regresar a la lista</a>
 </div>

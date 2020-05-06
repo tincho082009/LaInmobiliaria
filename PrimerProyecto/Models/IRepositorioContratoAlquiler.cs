@@ -8,6 +8,6 @@ namespace PrimerProyecto.Models
     public interface IRepositorioContratoAlquiler : IRepositorio<ContratoAlquiler>
     {
         IList<ContratoAlquiler> ObtenerPorInmuebleId(int id);
-        IList<ContratoAlquiler> ObtenerTodosDisponibles(DateTime fechaInicio, DateTime fechaFinal);
+        IList<ContratoAlquiler> ObtenerTodosVigentes(DateTime fechaInicio, DateTime fechaFinal);
     }
 }

@@ -19,7 +19,7 @@
                         <input asp-for="AvatarFile" class="form-control" />
                         <span asp-validation-for="AvatarFile" class="text-danger"></span>
                     </div>
-                    <input type="submit" value="Cambiar" class="btn btn-light profile-edit-btn" />
+                    <input type="submit" value="Cambiar" class="button" />
                 </div>
             </form>         
         </div>
@@ -68,7 +68,7 @@
             </div>
         </div>
         <div class="col-md-2">
-            @Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new { @class = "btn btn-light profile-edit-btn" })
+            @Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new { @class = "button btn"})
         </div>
     </div>       
 </div>

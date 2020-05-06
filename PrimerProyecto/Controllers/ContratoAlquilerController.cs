@@ -46,14 +46,6 @@ namespace PrimerProyecto.Controllers
             return View(lista);
         }
 
-        // GET: ContratoAlquiler/Pagos/5
-        public ActionResult Details(int id)
-        {
-
-            var sujeto = rp.ObtenerTodos();
-            return View(sujeto);
-        }
-
         // GET: ContratoAlquiler/Create
         public ActionResult Create()
         {
@@ -401,13 +393,11 @@ namespace PrimerProyecto.Controllers
         {
             var fechaInicio = ca.FechaInicio;
             var fechaFinal = ca.FechaFinalizacion;
-            var lista = rca.ObtenerTodosDisponibles(fechaInicio, fechaFinal);
+            var lista = rca.ObtenerTodosVigentes(fechaInicio, fechaFinal);
             IList<ContratoAlquiler> lista2punto0 = new List<ContratoAlquiler>();
             foreach (var item in lista)
             {
-                if (item.Estado) {
-                    lista2punto0.Add(item);
-                }
+                lista2punto0.Add(item);
             }
             return View(lista);
         }

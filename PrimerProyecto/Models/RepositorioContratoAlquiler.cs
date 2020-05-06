@@ -205,7 +205,7 @@ namespace PrimerProyecto.Models
 			}
 			return res;
 		}
-		public IList<ContratoAlquiler> ObtenerTodosDisponibles(DateTime fechaInicio, DateTime fechaFinal)
+		public IList<ContratoAlquiler> ObtenerTodosVigentes(DateTime fechaInicio, DateTime fechaFinal)
 		{
 			IList<ContratoAlquiler> res = new List<ContratoAlquiler>();
 			using (SqlConnection connection = new SqlConnection(connectionString))
@@ -213,7 +213,8 @@ namespace PrimerProyecto.Models
 				string sql = $"SELECT ca.Id, Monto, FechaInicio, FechaFinalizacion, InquilinoId, InmuebleId, ca.Estado, inq.Nombre, inq.Apellido , i.Direccion " +
 					$" FROM ContratoAlquiler ca INNER JOIN Inmueble i ON ca.InmuebleId = i.Id " +
 					$"INNER JOIN Inquilino inq ON ca.InquilinoId = inq.Id " +
-					$"WHERE (FechaInicio BETWEEN CAST(@fechaInicio AS datetime)AND CAST(@fechaFinal AS datetime))AND (FechaFinalizacion BETWEEN CAST(@fechaInicio AS datetime)AND CAST(@fechaFinal AS datetime))";
+					$"WHERE ca.Estado = 1" +
+					$"AND (FechaFinalizacion BETWEEN @fechaInicio AND @fechaFinal)";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
 					command.Parameters.Add("@fechaInicio", SqlDbType.DateTime).Value = fechaInicio;

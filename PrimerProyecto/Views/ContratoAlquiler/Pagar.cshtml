@@ -4,39 +4,86 @@
 @{
     ViewData["Title"] = "Pagar";
 }
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstilosFormularios");}
+    <style>
+        #what-we-do .card .block-1:before {
+            content: "\f163";
+        }
 
+        #what-we-do .card .block-2:before {
+            content: "\f073";
+        }
+
+        #what-we-do .card .block-3:before {
+            content: "\f155";
+        }
+
+        #what-we-do .card .block-4:before {
+            content: "\f0e7";
+        }
+    </style>
+}
 <h1>Pagar</h1>
-<div>
-    <hr />
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="titulo">Cuota del contrato</h1>
+    </div>
+</div>
+<section id="what-we-do">
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-1">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.NroPago)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.NroPago)</p>
 
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NroPago)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NroPago)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaPago)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FechaPago)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Importe)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Importe)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ContratoId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ContratoId)
-        </dd>
-    </dl>
-    <form asp-action="Pagar">
-        <input type="submit" value="Pagar" class="btn btn-warning" /> |
-        <a asp-action="Index" class="btn btn-info">Regresar a la lista</a>
-    </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-2">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.FechaPago)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.FechaPago)</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-3">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Importe)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Importe)</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-4">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.ContratoId)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.ContratoId)</p>
+
+                    </div>
+                </div>
+            </div>           
+        </div>
+    </div>
+</section>
+<div class="row">
+    <div class="col-sm-12">
+        <form asp-action="Pagar">
+            <input type="submit" value="Pagar" class="button" />
+        </form>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-12">
+        <a asp-action="Index" class="buttonIndex btn">Regresar a la lista</a>
+    </div>
 </div>
