@@ -65,7 +65,14 @@
                     @(Math.Round(item.Precio))
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
+                    @if (item.Estado)
+                    {
+                        <div class="btn-capsul btn btn-success">Disponible</div>
+                    }
+                    else
+                    {
+                        <div class="btn-capsul btn btn-danger">No_Disponible</div>
+                    }
                 </td>
                 <td>
                     @Html.ActionLink(item.Propietario.Nombre + " " + item.Propietario.Apellido, "Index", "Propietarios", new { id = item.PropietarioId }, new { @class = "text-decoration-none" })
