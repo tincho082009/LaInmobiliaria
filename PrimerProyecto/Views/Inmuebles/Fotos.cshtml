@@ -6,44 +6,63 @@
 @section Styles {
     @{await Html.RenderPartialAsync("_EstilosFormularios");}
 }
-<h1>Fotos</h1>
 
+<h1>Fotos</h1>
+<form asp-action="SubirFotos" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="fotosContainer btn btn-lg btn-light" style="height: 100%">
+                <input type="hidden" name="Id" id="Id" value="@ViewBag.IdSelect" />
+                <input class="fotos" style="" type="file" id="Fotos" multiple="multiple" name="Fotos" />AGREGAR FOTOS
+                <span class="text-danger field-validation-valid" data-valmsg-for="Fotos" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-2">
+            <input type="submit" value="Cargar" class="button" />
+        </div>
+        <div class="col-sm-4">
+        </div>
+    </div>
+</form>
+<br />
+<hr />
 <div>
-    <h4>Inmueble</h4>
-    <hr />
     @if (Model.Count() >= 1)
     {
         @foreach (var item in Model)
-        { 
-<dl class="row">
-    <dt class="col-sm-2"></dt>
-    <dd class="col-sm-8">
-        <div class="profile-img">
-            @if (item.Url != "")
-            {
-                <img src="@item.Url" />
-            }
-            else
-            {
-                <p>Sin imagenes</p>
-            }
-        </div>
-    </dd>
-    <dd class="col-sm-2"></dd>
-    <dt class="col-sm-4">       
-    </dt>
-    <dd class="col-sm-8">
-        ELIMINAR
-        @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
         {
-            @Html.ActionLink("", "Delete", "Foto", new { id = item.Id }, new { @class = "btn btn-outline-danger fas fa-trash-alt", @title = "Borrar" })
-        }
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        DETALLES
-        @Html.ActionLink("", "Details", "Foto", new { id = item.Id }, new { @class = "btn btn-outline-warning fas fa-info-circle", @title = "Detalles" })
-    </dd>
-</dl>
-    <hr />
+            <dl class="row">
+                <dt class="col-sm-2"></dt>
+                <dd class="col-sm-8">
+                    <div class="profile-img">
+                        @if (item.Url != "")
+                        {
+                            <img src="@item.Url" />
+                        }
+                        else
+                        {
+                            <p>Sin imagenes</p>
+                        }
+                    </div>
+                </dd>
+                <dd class="col-sm-2"></dd>
+                <dt class="col-sm-4">
+                </dt>
+                <dd class="col-sm-8">
+
+                    @if (User.IsInRole("Administrador") || User.IsInRole("SuperAdministrador"))
+                    {
+                        <span>ELIMINAR</span>
+                        @Html.ActionLink("", "Delete", "Foto", new { id = item.Id }, new { @class = "btn btn-outline-danger fas fa-trash-alt", @title = "Borrar" })
+                    }
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    DETALLES
+                    @Html.ActionLink("", "Details", "Foto", new { id = item.Id }, new { @class = "btn btn-outline-warning fas fa-info-circle", @title = "Detalles" })
+                </dd>
+            </dl>
+            <hr />
         }
     }
     else

@@ -277,6 +277,7 @@ namespace PrimerProyecto.Controllers
                 ViewBag.Mensaje = TempData["Mensaje"];
             if (TempData.ContainsKey("Error"))
                 ViewBag.Error = TempData["Error"];
+            ViewBag.IdSelect = id;
             return View(lista);
         }
         public ActionResult Renovar(int id)
@@ -378,6 +379,8 @@ namespace PrimerProyecto.Controllers
         {
             var fechaInicio = ca.FechaInicio;
             var fechaFinal = ca.FechaFinalizacion;
+            ViewBag.FechaInicioBusqueda = fechaInicio.Date.ToShortDateString();
+            ViewBag.FechaFinalBusqueda = fechaFinal.Date.ToShortDateString();
             var lista = rinm.ObtenerTodosDisponibles(fechaInicio, fechaFinal);
             return View(lista);
         }
@@ -393,6 +396,8 @@ namespace PrimerProyecto.Controllers
         {
             var fechaInicio = ca.FechaInicio;
             var fechaFinal = ca.FechaFinalizacion;
+            ViewBag.FechaInicioBusqueda = fechaInicio.Date.ToShortDateString();
+            ViewBag.FechaFinalBusqueda = fechaFinal.Date.ToShortDateString();
             var lista = rca.ObtenerTodosVigentes(fechaInicio, fechaFinal);
             IList<ContratoAlquiler> lista2punto0 = new List<ContratoAlquiler>();
             foreach (var item in lista)

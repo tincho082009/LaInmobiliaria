@@ -3,42 +3,91 @@
 @{
     ViewData["Title"] = "Delete";
 }
+@section Styles {
+    @{await Html.RenderPartialAsync("_EstilosFormularios");}
+    <style>
+        #what-we-do .card .block-1:before {
+            content: "\f0e7";
+        }
+
+        #what-we-do .card .block-2:before {
+            content: "\f0c6";
+        }
+
+        #what-we-do .card .block-3:before {
+            content: "\f034";
+        }
+
+        #what-we-do .card .block-4:before {
+            content: "\f0e7";
+        }
+    </style>
+}
 
 <h1>Borrar</h1>
+<hr />
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="titulo">Foto</h1>
+    </div>
+</div>
+<section id="what-we-do">
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-1">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Id)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Id)</p>
 
-<h3>¿Estas seguro de que quieres borrar esto?</h3>
-<div>
-    <h4>Foto</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Url)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Url)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Tipo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Tipo)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.InmuebleId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.InmuebleId)
-        </dd>
-    </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-2">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Url)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Url)</p>
 
-    <form asp-action="Delete">
-        <input type="submit" value="Borrar" class="btn btn-danger" /> |
-        @Html.ActionLink("Regresar", "Index", "Inmuebles", new { }, new { @class = "btn btn-info" })
-    </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-3">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.Tipo)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.Tipo)</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                <div class="card">
+                    <div class="card-block block-4">
+                        <h3 class="card-title">@Html.DisplayNameFor(model => model.InmuebleId)</h3>
+                        <p class="card-text">@Html.DisplayFor(model => model.InmuebleId)</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<div class="row">
+    <div class="col-sm-12">
+        <form asp-action="Delete">
+            <input type="submit" value="Borrar" class="btn button" /> 
+
+        </form>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-12">
+        @Html.ActionLink("Regresar", "Fotos", "Inmuebles", new { id = Model.InmuebleId }, new { @class = "btn buttonIndex" })
+    </div>
 </div>

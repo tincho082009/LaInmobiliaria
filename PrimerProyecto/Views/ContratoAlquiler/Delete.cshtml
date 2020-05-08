@@ -106,7 +106,16 @@
                 <div class="card">
                     <div class="card-block block-7">
                         <h3 class="card-title">@Html.DisplayNameFor(model => model.Estado)</h3>
-                        <p class="card-text">@Html.DisplayFor(model => model.Estado)</p>
+                        <p class="card-text">
+                            @if (Model.Estado)
+                            {
+                                <div class="btn-capsul btn btn-success fas fa-check-circle" title="Disponible"></div>
+                            }
+                            else
+                            {
+                                <div class="btn-capsul btn btn-danger fas fa-times-circle" title="No Disponible"></div>
+                            }
+                        </p>
                     </div>
                 </div>
             </div>

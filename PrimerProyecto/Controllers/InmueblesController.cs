@@ -166,6 +166,16 @@ namespace PrimerProyecto.Controllers
             try
             {
                 // TODO: Add delete logic here
+                var f = rf.ObtenerTodosPorInmuebleId(id);
+                foreach (var item in f)
+                {
+                    string wwwPath = environment.WebRootPath;
+                    string path = Path.Combine(wwwPath, "Uploads");
+                    string urlRenovada = item.Url.Replace("/Uploads\\", "");
+                    string pathCompleto = Path.Combine(path, urlRenovada);
+                    System.IO.File.Delete(pathCompleto);
+                    rf.Baja(item.Id);
+                }             
                 ri.Baja(id);
                 TempData["Mensaje"] = "Eliminación realizada correctamente";
                 return RedirectToAction(nameof(Index));
@@ -194,8 +204,41 @@ namespace PrimerProyecto.Controllers
                 ViewBag.Id = TempData["Id"];
             if (TempData.ContainsKey("Mensaje"))
                 ViewBag.Mensaje = TempData["Mensaje"];
-
+            ViewBag.IdSelect = id;
             return View(lista);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SubirFotos(IFormFileCollection fotos, int id)
+        {
+            Foto f = new Foto();
+            var i = ri.ObtenerPorId(id);
+            var lista = fotos;
+            var misFotos = rf.ObtenerTodosPorInmuebleId(i.Id);
+            var cant = misFotos.Count;
+            var x = cant + 1;
+            foreach (var item in lista)
+            {
+                string wwwPath = environment.WebRootPath;
+                string path = Path.Combine(wwwPath, "Uploads");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                string fileName = "inmueble_" + i.Id + "-" + x + Path.GetExtension(item.FileName);
+                string pathCompleto = Path.Combine(path, fileName);
+                f.Url = Path.Combine("/Uploads", fileName);
+                f.Tipo = Path.GetExtension(item.FileName);
+                using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
+                {
+                    item.CopyTo(stream);
+                }
+                f.InmuebleId = i.Id;
+                rf.Alta(f);
+                x++;
+            }
+            return RedirectToAction(nameof(Fotos), new { id = id });
         }
 
         public ActionResult InmueblesDisponibles()

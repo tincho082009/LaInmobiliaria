@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -46,39 +47,6 @@ namespace PrimerProyecto.Controllers
             return View(sujeto);
         }
 
-        // GET: Foto/Edit/5
-        public ActionResult Edit(int id)
-        {
-            ViewBag.Inmuebles = ri.ObtenerTodos();
-            var sujeto = rf.ObtenerPorId(id);
-            if (TempData.ContainsKey("Mensaje"))
-                ViewBag.Mensaje = TempData["Mensaje"];
-            if (TempData.ContainsKey("Error"))
-                ViewBag.Error = TempData["Error"];
-            return View(sujeto);
-        }
-
-        // POST: Foto/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Foto f)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                rf.Modificacion(f);
-                TempData["Mensaje"] = "Datos guardados correctamente";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-                ViewBag.StackTrate = ex.StackTrace;
-                return View(f);
-            }
-        }
-
         // GET: Foto/Delete/5
         [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
@@ -99,11 +67,16 @@ namespace PrimerProyecto.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
+                f = rf.ObtenerPorId(id);
+                int InmId = f.InmuebleId;
+                string wwwPath = environment.WebRootPath;
+                string path = Path.Combine(wwwPath, "Uploads");
+                string urlRenovada = f.Url.Replace("/Uploads\\", "");
+                string pathCompleto = Path.Combine(path, urlRenovada);
+                System.IO.File.Delete(pathCompleto);
                 rf.Baja(id);
                 TempData["Mensaje"] = "Eliminación realizada correctamente";
-                return RedirectToAction(nameof(Index), "Inmuebles");
+                return RedirectToAction("Fotos", "Inmuebles", new { id= InmId});
             }
             catch (Exception ex)
             {

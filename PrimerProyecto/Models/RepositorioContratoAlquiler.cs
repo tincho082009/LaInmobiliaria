@@ -214,7 +214,10 @@ namespace PrimerProyecto.Models
 					$" FROM ContratoAlquiler ca INNER JOIN Inmueble i ON ca.InmuebleId = i.Id " +
 					$"INNER JOIN Inquilino inq ON ca.InquilinoId = inq.Id " +
 					$"WHERE ca.Estado = 1" +
-					$"AND (FechaFinalizacion BETWEEN @fechaInicio AND @fechaFinal)";
+					$"AND((FechaInicio < @fechaInicio)AND(FechaFinalizacion > @fechaFinal))" +
+					$"OR((FechaInicio BETWEEN @fechaInicio AND @fechaFinal)AND(FechaFinalizacion BETWEEN @fechaInicio AND @fechaFinal))"+
+					$"OR((FechaInicio < @fechaInicio)AND(FechaFinalizacion BETWEEN @fechaInicio AND @fechaFinal))"+
+					$"OR((FechaInicio BETWEEN @fechaInicio AND @fechaFinal)AND(FechaFinalizacion > @fechaFinal));";
 				using (SqlCommand command = new SqlCommand(sql, connection))
 				{
 					command.Parameters.Add("@fechaInicio", SqlDbType.DateTime).Value = fechaInicio;

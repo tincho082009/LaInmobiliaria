@@ -7,7 +7,7 @@
     @{await Html.RenderPartialAsync("_EstiloIndex");}
 }
 
-    <h1>Contratos vigentes</h1>
+    <h1>Contratos vigentes entre @ViewBag.FechaInicioBusqueda - @ViewBag.FechaFinalBusqueda</h1>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -58,7 +58,14 @@
                     @Html.ActionLink(item.Inmueble.Direccion, "Index", "Inmuebles", new { id = item.InmuebleId }, new { @class = "text-decoration-none" })
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
+                    @if (item.Estado)
+                    {
+                        <div class="btn-capsul btn btn-success fas fa-check-circle" title="Disponible"></div>
+                    }
+                    else
+                    {
+                        <div class="btn-capsul btn btn-danger fas fa-times-circle" title="No Disponible"></div>
+                    }
                 </td>
                 <td>
                     <div class="btn-group">
