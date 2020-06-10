@@ -25,7 +25,7 @@ namespace PrimerProyecto.Models
         public int CantAmbientes { get; set; }
         public decimal Precio { get; set; }
         public bool Estado { get; set; }
-        public IFormFileCollection Fotos { get; set; }
+        //public IFormFileCollection Fotos { get; set; }
 
         
     }

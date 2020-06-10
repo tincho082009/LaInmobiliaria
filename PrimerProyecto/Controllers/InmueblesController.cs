@@ -73,33 +73,33 @@ namespace PrimerProyecto.Controllers
                     Foto f = new Foto();
                     int res = ri.Alta(i);
                     TempData["Id"] = i.Id;
-                    
-                    if (i.Fotos.Count != 0 && i.Id > 0)
-                    {
-                        var lista = i.Fotos;
-                        var x = 1;
-                        foreach (var item in lista)
-                        {                       
-                            string wwwPath = environment.WebRootPath;
-                            string path = Path.Combine(wwwPath, "Uploads");
-                            if (!Directory.Exists(path))
-                            {
-                                Directory.CreateDirectory(path);
-                            }
-                            string fileName = "inmueble_" + i.Id +"-"+ x + Path.GetExtension(item.FileName);
-                            string pathCompleto = Path.Combine(path, fileName);
-                            f.Url = Path.Combine("/Uploads", fileName);
-                            f.Tipo = Path.GetExtension(item.FileName);
-                            using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
-                            {
-                                item.CopyTo(stream);
-                            }
-                            f.InmuebleId = i.Id;
-                            rf.Alta(f);
-                            x++;
-                        }
-                    }
-                   
+
+                    //if (i.Fotos.Count != 0 && i.Id > 0)
+                    //{
+                    //    var lista = i.Fotos;
+                    //    var x = 1;
+                    //    foreach (var item in lista)
+                    //    {
+                    //        string wwwPath = environment.WebRootPath;
+                    //        string path = Path.Combine(wwwPath, "Uploads");
+                    //        if (!Directory.Exists(path))
+                    //        {
+                    //            Directory.CreateDirectory(path);
+                    //        }
+                    //        string fileName = "inmueble_" + i.Id + "-" + x + Path.GetExtension(item.FileName);
+                    //        string pathCompleto = Path.Combine(path, fileName);
+                    //        f.Url = Path.Combine("/Uploads", fileName);
+                    //        f.Tipo = Path.GetExtension(item.FileName);
+                    //        using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
+                    //        {
+                    //            item.CopyTo(stream);
+                    //        }
+                    //        f.InmuebleId = i.Id;
+                    //        rf.Alta(f);
+                    //        x++;
+                    //    }
+                    //}
+
                     return RedirectToAction(nameof(Index));
                 }
                 else

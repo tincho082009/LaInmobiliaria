@@ -12,10 +12,12 @@ namespace PrimerProyecto.Models
         {
 
         }
-        public DbSet<Propietario> Propietarios { get; set; }
-        public DbSet<Inquilino> Inquilinos { get; set; }
-        public DbSet<Inmueble> Inmuebles { get; set; }
-        public DbSet<ContratoAlquiler> ContratoAlquileres { get; set; }
-        public DbSet<Pago> Pagos { get; set; }
+        public DbSet<Propietario> Propietario { get; set; }
+        public DbSet<Inquilino> Inquilino { get; set; }
+        public DbSet<Inmueble> Inmueble { get; set; }
+        public DbSet<Foto> Foto { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<ContratoAlquiler> ContratoAlquiler { get; set; }
+        public DbSet<Pago> Pago { get; set; }
     }
 }

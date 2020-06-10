@@ -75,23 +75,23 @@ namespace PrimerProyecto.Controllers
                     var nbreRnd = Guid.NewGuid();//posible nombre aleatorio
                     var res = repositorioUsuario.Alta(u);
                     TempData["Id"] = u.Id;
-                    if (u.AvatarFile != null && u.Id > 0)
-                    {
-                        string wwwPath = environment.WebRootPath;
-                        string path = Path.Combine(wwwPath, "Uploads");
-                        if (!Directory.Exists(path))
-                        {
-                            Directory.CreateDirectory(path);
-                        }
-                        string fileName = "avatar_" + u.Id + Path.GetExtension(u.AvatarFile.FileName);
-                        string pathCompleto = Path.Combine(path, fileName);
-                        u.Avatar = Path.Combine("/Uploads", fileName);
-                        using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
-                        {
-                            u.AvatarFile.CopyTo(stream);
-                        }
-                        repositorioUsuario.Modificacion(u);
-                    }
+                    //if (u.AvatarFile != null && u.Id > 0)
+                    //{
+                    //    string wwwPath = environment.WebRootPath;
+                    //    string path = Path.Combine(wwwPath, "Uploads");
+                    //    if (!Directory.Exists(path))
+                    //    {
+                    //        Directory.CreateDirectory(path);
+                    //    }
+                    //    string fileName = "avatar_" + u.Id + Path.GetExtension(u.AvatarFile.FileName);
+                    //    string pathCompleto = Path.Combine(path, fileName);
+                    //    u.Avatar = Path.Combine("/Uploads", fileName);
+                    //    using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
+                    //    {
+                    //        u.AvatarFile.CopyTo(stream);
+                    //    }
+                    //    repositorioUsuario.Modificacion(u);
+                    //}
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -338,25 +338,25 @@ namespace PrimerProyecto.Controllers
         {
             try
             {
-                var u = repositorioUsuario.ObtenerPorEmail(User.Identity.Name);
-                u.AvatarFile = user.AvatarFile;
-                if (u.AvatarFile != null && u.Id > 0)
-                {
-                    string wwwPath = environment.WebRootPath;
-                    string path = Path.Combine(wwwPath, "Uploads");
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                    string fileName = "avatar_" + u.Id + Path.GetExtension(u.AvatarFile.FileName);
-                    string pathCompleto = Path.Combine(path, fileName);
-                    u.Avatar = Path.Combine("/Uploads", fileName);
-                    using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
-                    {
-                        u.AvatarFile.CopyTo(stream);
-                    }
-                    repositorioUsuario.Modificacion(u);
-                }
+                //var u = repositorioUsuario.ObtenerPorEmail(User.Identity.Name);
+                //u.AvatarFile = user.AvatarFile;
+                //if (u.AvatarFile != null && u.Id > 0)
+                //{
+                //    string wwwPath = environment.WebRootPath;
+                //    string path = Path.Combine(wwwPath, "Uploads");
+                //    if (!Directory.Exists(path))
+                //    {
+                //        Directory.CreateDirectory(path);
+                //    }
+                //    string fileName = "avatar_" + u.Id + Path.GetExtension(u.AvatarFile.FileName);
+                //    string pathCompleto = Path.Combine(path, fileName);
+                //    u.Avatar = Path.Combine("/Uploads", fileName);
+                //    using (FileStream stream = new FileStream(pathCompleto, FileMode.Create))
+                //    {
+                //        u.AvatarFile.CopyTo(stream);
+                //    }
+                //    repositorioUsuario.Modificacion(u);
+                //}
                 return RedirectToAction(nameof(Index));
 
             }
